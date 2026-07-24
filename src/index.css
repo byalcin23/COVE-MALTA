@@ -47,7 +47,12 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-family: 'Outfit', sans-serif;
 }
 
-/* HIGH-PRECISION SACRED GEOMETRY MORPH LAB STYLES */
+/* LIQUID SILK RIBBON MORPHING STYLES (NO VISIBLE DOTS - PURE FLUID VECTOR) */
+.liquid-silk-path {
+  transition: d 1.4s cubic-bezier(0.25, 1, 0.35, 1);
+  will-change: d;
+}
+
 .morph-reasoning-canvas {
   display: flex;
   flex-direction: column;
@@ -127,24 +132,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   flex-shrink: 0;
 }
 
-.sacred-spoke-line {
-  transition: x1 0.75s cubic-bezier(0.34, 1.56, 0.64, 1),
-              y1 0.75s cubic-bezier(0.34, 1.56, 0.64, 1),
-              x2 0.75s cubic-bezier(0.34, 1.56, 0.64, 1),
-              y2 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: x1, y1, x2, y2;
-}
-
-.sacred-migrating-string {
-  transition: d 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: d;
-}
-
-.sacred-migrating-node {
-  transition: cx 0.75s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: cx, cy;
-}
-
 .shape-precision-badge {
   display: flex;
   align-items: center;
@@ -169,41 +156,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-weight: 700;
   color: #FFFFFF;
   letter-spacing: 0.8px;
-}
-
-/* OPTION 1: FLUID RIBBON */
-.svg-morph-canvas {
-  width: 90px;
-  height: 90px;
-}
-
-.fluid-ribbon-path {
-  transition: d 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-  animation: ribbonPulse 2s ease-in-out infinite alternate;
-}
-
-@keyframes ribbonPulse {
-  0% { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: 30; }
-}
-
-/* OPTION 3: STARDUST FLUX */
-.stardust-flux-box {
-  width: 90px;
-  height: 90px;
-  position: relative;
-}
-
-.flux-particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-primary);
-  box-shadow: 0 0 8px var(--accent-primary);
-  transform: translate(-50%, -50%);
-  transition: left 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: left, top;
 }
 
 /* PROMINENT HERO TRUST & METRICS GRID BAR */

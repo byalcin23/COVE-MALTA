@@ -23,8 +23,8 @@ export default function SearchBar({
   const [isCanvasDone, setIsCanvasDone] = useState(false);
   const [dynamicReasoningTrace, setDynamicReasoningTrace] = useState([]);
   
-  // Active Morphing Prototype Option (1, 2, or 3)
-  const [activeMorphOption, setActiveMorphOption] = useState(2);
+  // Active Morphing Prototype Option (Default: 1 - Liquid Silk Ribbon)
+  const [activeMorphOption, setActiveMorphOption] = useState(1);
 
   // Character-by-character typewriter loop
   useEffect(() => {
@@ -143,6 +143,7 @@ export default function SearchBar({
     ];
   };
 
+  // DELIBERATELY EXTENDED 10-SECOND REASONING FLOW FOR COMFORTABLE INSPECTION!
   const handleSearchClick = () => {
     const queryToUse = searchQuery || NATURAL_SEARCH_PROMPTS[promptIndex].fullText;
     if (!searchQuery) {
@@ -157,24 +158,26 @@ export default function SearchBar({
     setCanvasStep(0);
     setCanvasProgress(0);
 
+    // Smooth 9.6-second progress bar fill
     const pTimer = setInterval(() => {
       setCanvasProgress((prev) => {
         if (prev >= 100) {
           clearInterval(pTimer);
           return 100;
         }
-        return prev + 2;
+        return prev + 1;
       });
-    }, 45);
+    }, 95);
 
-    setTimeout(() => setCanvasStep(1), 1100);
-    setTimeout(() => setCanvasStep(2), 2200);
-    setTimeout(() => setCanvasStep(3), 3300);
+    // 2.4-second intervals between steps (9.6 seconds total)
+    setTimeout(() => setCanvasStep(1), 2400);
+    setTimeout(() => setCanvasStep(2), 4800);
+    setTimeout(() => setCanvasStep(3), 7200);
     
     setTimeout(() => {
       setIsCanvasDone(true);
       onExecuteSearch(queryToUse);
-    }, 4200);
+    }, 9600);
   };
 
   const scrollToResults = () => {
