@@ -267,7 +267,7 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* SLOT MACHINE REEL STYLE DYNAMIC REASONING CANVAS */}
+        {/* REASONING CANVAS: LEFT SIDE SOFT FADE, RIGHT SIDE SLOT MACHINE REEL */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
@@ -276,10 +276,10 @@ export default function SearchBar({
 
             {!isCanvasDone ? (
               <div className="morph-reasoning-canvas-slot">
-                {/* Fixed Anchored Icon Stage */}
+                {/* Fixed Anchored Icon & Soft Fade Step Badge (Left Side) */}
                 <MorphingLab stepIndex={canvasStep} />
 
-                {/* SLOT MACHINE REEL REASONING BUBBLE (STRICTLY ANCHORED) */}
+                {/* Slot Machine Reel Dynamic Reasoning Balloon (Right Side) */}
                 <div className="slot-machine-reel-container">
                   <div key={canvasStep} className="slot-reel-item-box">
                     <span className="slot-reasoning-title">{activeReasoningStep.stepTitle}</span>
