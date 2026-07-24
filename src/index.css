@@ -47,115 +47,108 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-family: 'Outfit', sans-serif;
 }
 
-/* LIQUID SILK RIBBON MORPHING STYLES (100% HOMOGENOUS BEZIER TOPOLOGY) */
+/* FIXED ANCHORED ICON STAGE (ZERO LAYOUT SHIFT OR HORIZONTAL JUMPING) */
+.morph-stage-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.morph-fixed-icon-box {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.svg-precision-canvas {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
 .liquid-silk-path {
   transition: d 1.8s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: d;
 }
 
-.morph-reasoning-canvas {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 4px 0;
-}
-
-.morph-lab-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(229, 193, 88, 0.22);
-  border-radius: 20px;
-  padding: 14px 16px;
-  width: 100%;
-}
-
-.morph-lab-selector {
+/* ANCHORED FIXED BADGE BELOW/SIDE OF ICON */
+.shape-precision-badge-fixed {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-}
-
-.lab-opt-btn {
-  background: rgba(15, 19, 29, 0.8);
-  border: 1px solid var(--border-light);
-  color: var(--text-muted);
+  background: rgba(15, 19, 29, 0.9);
+  border: 1px solid rgba(229, 193, 88, 0.28);
   padding: 5px 12px;
   border-radius: var(--radius-pill);
-  font-size: 0.74rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-}
-
-.lab-opt-btn:hover {
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.lab-opt-btn.active {
-  background: rgba(229, 193, 88, 0.16);
-  border-color: var(--accent-primary);
-  color: #FFFFFF;
-  box-shadow: 0 0 14px rgba(229, 193, 88, 0.2);
-}
-
-.morph-lab-viewport-large {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  min-height: 110px;
-}
-
-.sacred-precision-stage {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-  justify-content: center;
-}
-
-.svg-precision-canvas {
-  width: 90px;
-  height: 90px;
-  overflow: visible;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
-}
-
-.shape-precision-badge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(15, 19, 29, 0.9);
-  border: 1px solid rgba(229, 193, 88, 0.3);
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 .shape-step-num {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 800;
   color: var(--accent-cyan);
 }
 
 .shape-step-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #FFFFFF;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+/* CHATGPT / CLAUDE STYLE MINIMALIST REASONING STYLES */
+.morph-reasoning-canvas-chatgpt {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(229, 193, 88, 0.18);
+  border-radius: 20px;
+}
+
+.chatgpt-reasoning-status-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+}
+
+.chatgpt-status-fade {
+  display: flex;
+  flex-direction: column;
+  animation: chatgptFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes chatgptFade {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.chatgpt-reasoning-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  line-height: 1.3;
+}
+
+.chatgpt-reasoning-detail {
+  font-size: 0.76rem;
+  color: var(--text-body);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* PROMINENT HERO TRUST & METRICS GRID BAR */
@@ -420,7 +413,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
 
 .inpage-refine-btn:hover {
   border-color: rgba(255, 255, 255, 0.25);
-  color: #FFFFFF;
 }
 
 /* Hardware-Accelerated Scroll Progress Bar */

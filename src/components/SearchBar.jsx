@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Sparkles, X, Wand2, ShieldCheck, ArrowDown, RefreshCw } from 'lucide-react';
+import { Search, Sparkles, X, ArrowDown, RefreshCw } from 'lucide-react';
 import { NATURAL_SEARCH_PROMPTS, QUICK_FILTERS } from '../data/prompts';
 import { LISTINGS } from '../data/listings';
 import MorphingLab from './MorphingLab';
@@ -22,9 +22,6 @@ export default function SearchBar({
   const [canvasProgress, setCanvasProgress] = useState(0);
   const [isCanvasDone, setIsCanvasDone] = useState(false);
   const [dynamicReasoningTrace, setDynamicReasoningTrace] = useState([]);
-  
-  // Active Morphing Prototype Option (Default: 1 - Liquid Silk Ribbon)
-  const [activeMorphOption, setActiveMorphOption] = useState(1);
 
   // Character-by-character typewriter loop
   useEffect(() => {
@@ -125,25 +122,24 @@ export default function SearchBar({
 
     return [
       {
-        stepTitle: `Parsing intent: Geo-fencing Target Area -> [${detectedLocation}]`,
-        detailText: `Extracting semantic tokens: ${promptText ? `"${promptText.slice(0, 45)}..."` : 'Default curated parameters'}`
+        stepTitle: `Thinking: Geo-fencing target area -> ${detectedLocation}`,
+        detailText: `Analyzing prompt tokens & spatial boundaries...`
       },
       {
-        stepTitle: `Filtering 120+ registries for mandatory features -> [${detectedAmenities}]`,
-        detailText: `Evaluating budget constraint: ${priceConstraint} with verified landlord accreditation.`
+        stepTitle: `Thinking: Filtering 120+ verified listings for ${detectedAmenities}`,
+        detailText: `Evaluating budget constraint: ${priceConstraint}...`
       },
       {
-        stepTitle: `Cross-referencing live availability in ${detectedLocation} registry...`,
-        detailText: `Computing 98.6% affinity match score & calculating direct landlord contact index.`
+        stepTitle: `Thinking: Cross-referencing live landlord availability in ${detectedLocation}`,
+        detailText: `Computing 98.6% affinity index & escrow status...`
       },
       {
-        stepTitle: `Synthesizing final bespoke residence lineup for your prompt...`,
-        detailText: `Finalizing 3D interactive perspectives and map pin coordinates.`
+        stepTitle: `Thinking: Synthesizing bespoke residence dossier for your prompt...`,
+        detailText: `Finalizing 3D interactive perspectives...`
       }
     ];
   };
 
-  // DELIBERATELY EXTENDED 10-SECOND REASONING FLOW FOR COMFORTABLE INSPECTION!
   const handleSearchClick = () => {
     const queryToUse = searchQuery || NATURAL_SEARCH_PROMPTS[promptIndex].fullText;
     if (!searchQuery) {
@@ -158,7 +154,6 @@ export default function SearchBar({
     setCanvasStep(0);
     setCanvasProgress(0);
 
-    // Smooth 9.6-second progress bar fill
     const pTimer = setInterval(() => {
       setCanvasProgress((prev) => {
         if (prev >= 100) {
@@ -169,7 +164,6 @@ export default function SearchBar({
       });
     }, 95);
 
-    // 2.4-second intervals between steps (9.6 seconds total)
     setTimeout(() => setCanvasStep(1), 2400);
     setTimeout(() => setCanvasStep(2), 4800);
     setTimeout(() => setCanvasStep(3), 7200);
@@ -199,6 +193,11 @@ export default function SearchBar({
       matchReason: "Matches St. Julian's pool & short walk to office"
     }
   ];
+
+  const activeReasoningStep = dynamicReasoningTrace[canvasStep] || {
+    stepTitle: "Thinking...",
+    detailText: "Processing search query..."
+  };
 
   return (
     <div className="search-container">
@@ -268,7 +267,7 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* INTERACTIVE GEOMETRIC MORPHING LAB CANVAS */}
+        {/* CHATGPT / CLAUDE MINIMALIST REASONING CANVAS */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
@@ -276,32 +275,16 @@ export default function SearchBar({
             </div>
 
             {!isCanvasDone ? (
-              <div className="morph-reasoning-canvas">
-                {/* Interactive Morphing Lab Viewport */}
-                <MorphingLab
-                  stepIndex={canvasStep}
-                  activeOption={activeMorphOption}
-                  setActiveOption={setActiveMorphOption}
-                />
+              <div className="morph-reasoning-canvas-chatgpt">
+                {/* Fixed Anchored Icon Stage */}
+                <MorphingLab stepIndex={canvasStep} />
 
-                {/* Live Reasoning Trace Text */}
-                <div className="inpage-reasoning-list">
-                  {dynamicReasoningTrace.map((step, idx) => {
-                    const isActive = canvasStep >= idx;
-
-                    return (
-                      <div key={idx} className={`inpage-step ${isActive ? 'active' : ''}`}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                          <span style={{ fontWeight: 600, fontSize: '0.88rem' }}>{step.stepTitle}</span>
-                          {isActive && (
-                            <span style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '2px' }}>
-                              {step.detailText}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                {/* ChatGPT / Claude Style Pulsing Single-Line Reasoning Status */}
+                <div className="chatgpt-reasoning-status-box">
+                  <div key={canvasStep} className="chatgpt-status-fade">
+                    <span className="chatgpt-reasoning-title">{activeReasoningStep.stepTitle}</span>
+                    <span className="chatgpt-reasoning-detail">{activeReasoningStep.detailText}</span>
+                  </div>
                 </div>
               </div>
             ) : (
