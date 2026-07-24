@@ -1449,3 +1449,159 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   position: relative;
   z-index: 30;
 }
+
+/* COMPREHENSIVE RESPONSIVE MOBILE MEDIA QUERIES (PERFECT MOBILE UX) */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  
+  .brand-logo {
+    font-size: 1.1rem;
+    gap: 8px;
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+    letter-spacing: 1.5px;
+  }
+
+  .nav-btn {
+    padding: 7px 12px;
+  }
+
+  .nav-btn span {
+    display: none; /* Hide text labels on mobile nav buttons to save space */
+  }
+
+  .hero-section {
+    padding: 24px 16px 16px;
+  }
+
+  .hero-title {
+    font-size: 2.15rem; /* Scaled down for mobile screens */
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+    word-break: break-word;
+  }
+
+  .hero-subtitle {
+    font-size: 0.92rem;
+    margin-bottom: 20px;
+    padding: 0 4px;
+  }
+
+  .search-container {
+    padding: 0 2px;
+  }
+
+  .search-box {
+    padding: 6px 8px 6px 16px;
+    border-radius: 22px;
+  }
+
+  .search-input {
+    font-size: 0.95rem;
+  }
+
+  .prompt-overlay {
+    font-size: 0.9rem;
+  }
+
+  .search-action-btn {
+    padding: 10px 16px;
+    font-size: 0.84rem;
+  }
+
+  /* Stack Hero Trust Grid Vertically on Mobile */
+  .cove-trust-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 18px;
+    padding: 0 4px;
+  }
+
+  .trust-metric-card {
+    padding: 12px 16px;
+  }
+
+  .trust-number {
+    font-size: 0.92rem;
+  }
+
+  .trust-sub {
+    font-size: 0.72rem;
+  }
+
+  /* Reasoning Canvas Layout on Mobile */
+  .morph-reasoning-canvas-slot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .morph-stage-wrapper {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .shape-precision-badge-anchored {
+    width: 100%;
+    padding: 6px 12px;
+  }
+
+  .slot-machine-reel-container {
+    width: 100%;
+    height: auto;
+    min-height: 38px;
+  }
+
+  .slot-reasoning-title {
+    font-size: 0.82rem;
+    white-space: normal;
+  }
+
+  .slot-reasoning-detail {
+    font-size: 0.74rem;
+    white-space: normal;
+  }
+
+  /* Teaser Grid & Dossier Plate on Mobile */
+  .inpage-teaser-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .results-dossier-plate {
+    padding: 16px 12px;
+    border-radius: 20px;
+  }
+
+  .main-content {
+    padding: 0 14px 60px;
+  }
+
+  .grid-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.85rem;
+  }
+
+  .card-image-wrapper {
+    height: 200px;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+
+  .price-amount {
+    font-size: 1.35rem;
+  }
+}
