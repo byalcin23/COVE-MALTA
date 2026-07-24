@@ -22,7 +22,7 @@ export default function SearchBar({
   const [canvasProgress, setCanvasProgress] = useState(0);
   const [isCanvasDone, setIsCanvasDone] = useState(false);
   
-  // Asynchronous Multi-Thought Stream Engine State
+  // Asynchronous Organic AI Thought Engine State
   const [thoughtIndex, setThoughtIndex] = useState(0);
   const [dynamicThoughtStream, setDynamicThoughtStream] = useState([]);
   const asyncTimerRef = useRef(null);
@@ -103,7 +103,7 @@ export default function SearchBar({
     );
   };
 
-  // Generate 8-10 Granular Micro-Thoughts for Asynchronous Ticking (2-3 thoughts per status step!)
+  // Generate Organic Micro-Thoughts with Individual Thinking Weight / Duration
   const generateGranularThoughtStream = (promptText, chips) => {
     const textLower = (promptText || '').toLowerCase();
 
@@ -128,45 +128,54 @@ export default function SearchBar({
       // Phase 0 Thoughts (Status: NEURAL AI CORE)
       {
         title: `Parsing semantic tokens for ${detectedLocation}...`,
-        detail: `Tokenizing natural language parameters & spatial intent...`
+        detail: `Tokenizing natural language parameters & spatial intent...`,
+        weight: 1200 // Quick initial tokenization
       },
       {
         title: `Extracting key requirement: ${detectedAmenities}...`,
-        detail: `Analyzing embedding vectors against Malta rental index...`
+        detail: `Analyzing embedding vectors against Malta rental index...`,
+        weight: 2100 // Longer vector embedding calculation
       },
 
       // Phase 1 Thoughts (Status: MALTA GEO-PIN)
       {
         title: `Geo-fencing target boundary -> ${detectedLocation}`,
-        detail: `Calculating 3D GIS spatial overlay & walking radiuses...`
+        detail: `Calculating 3D GIS spatial overlay & walking radiuses...`,
+        weight: 1600
       },
       {
         title: `Applying financial constraint cap: ${priceCap}`,
-        detail: `Filtering 120+ verified properties for target price tier...`
+        detail: `Filtering 120+ verified properties for target price tier...`,
+        weight: 2400 // Deep budget matrix scan
       },
       {
         title: `Evaluating proximity to coast & promenade...`,
-        detail: `Checking noise levels & sunlight orientation data...`
+        detail: `Checking noise levels & sunlight orientation data...`,
+        weight: 1500
       },
 
       // Phase 2 Thoughts (Status: VERIFIED LEASE SHIELD)
       {
         title: `Verifying 100% landlord escrow contracts...`,
-        detail: `Cross-referencing Land Registry & deposit guarantees...`
+        detail: `Cross-referencing Land Registry & deposit guarantees...`,
+        weight: 2700 // Deep security & escrow audit (takes longer!)
       },
       {
         title: `Checking Instant Booking & verified availability...`,
-        detail: `Validating zero-commission landlord compliance...`
+        detail: `Validating zero-commission landlord compliance...`,
+        weight: 1800
       },
 
       // Phase 3 Thoughts (Status: BESPOKE VILLA RESIDENCE)
       {
         title: `Computing 98.6% affinity index for top matches...`,
-        detail: `Synthesizing interactive 3D virtual tour dossiers...`
+        detail: `Synthesizing interactive 3D virtual tour dossiers...`,
+        weight: 2200 // 3D synthesis calculation
       },
       {
         title: `Finalizing tailored residence preview dossier...`,
-        detail: `Preparing direct landlord inquiry channels...`
+        detail: `Preparing direct landlord inquiry channels...`,
+        weight: 1400
       }
     ];
   };
@@ -186,7 +195,7 @@ export default function SearchBar({
     setThoughtIndex(0);
     setCanvasProgress(0);
 
-    // Smooth overall progress bar tick
+    // Smooth overall progress bar tick (~11.5s total time for rich inspection)
     const pTimer = setInterval(() => {
       setCanvasProgress((prev) => {
         if (prev >= 100) {
@@ -195,36 +204,39 @@ export default function SearchBar({
         }
         return prev + 1;
       });
-    }, 95);
+    }, 115);
 
-    // Status Step Progression (~2.4s intervals)
-    setTimeout(() => setCanvasStep(1), 2400);
-    setTimeout(() => setCanvasStep(2), 4800);
-    setTimeout(() => setCanvasStep(3), 7200);
+    // Status Step Progression (~2.8s intervals)
+    setTimeout(() => setCanvasStep(1), 2800);
+    setTimeout(() => setCanvasStep(2), 5600);
+    setTimeout(() => setCanvasStep(3), 8400);
 
-    // ASYNCHRONOUS RANDOM THOUGHT REEL ENGINE!
-    // Thoughts change at RANDOM intervals between 750ms and 1450ms independently of status steps!
+    // ORGANIC VARIABLE DELAY AI THOUGHT REEL ENGINE!
+    // Each thought stays on screen for its unique organic weight + random jitter (1200ms - 2700ms)
     let currentThoughtIdx = 0;
     const scheduleNextThought = () => {
       if (currentThoughtIdx < thoughtStream.length - 1) {
-        // Pick a random interval between 800ms and 1400ms for realistic AI thinking unpredictability!
-        const randomDelay = Math.floor(Math.random() * 600) + 800;
+        const currentItem = thoughtStream[currentThoughtIdx];
+        // Organic delay: base weight + random jitter (+/- 250ms) for authentic AI processing feel!
+        const organicJitter = Math.floor(Math.random() * 500) - 250;
+        const finalDelay = Math.max(1200, currentItem.weight + organicJitter);
+
         asyncTimerRef.current = setTimeout(() => {
           currentThoughtIdx += 1;
           setThoughtIndex(currentThoughtIdx);
           scheduleNextThought();
-        }, randomDelay);
+        }, finalDelay);
       }
     };
 
     scheduleNextThought();
 
-    // Finish Search after ~9.6 seconds
+    // Finish Search cleanly after ~11.5 seconds
     setTimeout(() => {
       if (asyncTimerRef.current) clearTimeout(asyncTimerRef.current);
       setIsCanvasDone(true);
       onExecuteSearch(queryToUse);
-    }, 9600);
+    }, 11500);
   };
 
   const scrollToResults = () => {
@@ -320,7 +332,7 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* REASONING CANVAS: STATUS (SOFT FADE, NO NUMBERS) + ASYNCHRONOUS MULTI-THOUGHT SLOT REEL */}
+        {/* REASONING CANVAS: ORGANIC VARIABLE DELAY AI THOUGHT REEL */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
@@ -332,7 +344,7 @@ export default function SearchBar({
                 {/* Clean Status Title (No 01/02 numbers) */}
                 <MorphingLab stepIndex={canvasStep} />
 
-                {/* ASYNCHRONOUS MULTI-THOUGHT SLOT MACHINE REEL */}
+                {/* ORGANIC VARIABLE DELAY AI THOUGHT SLOT MACHINE REEL */}
                 <div className="slot-machine-reel-container">
                   <div key={thoughtIndex} className="slot-reel-item-box">
                     <span className="slot-reasoning-title">{activeThought.title}</span>
