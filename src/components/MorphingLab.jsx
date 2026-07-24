@@ -67,9 +67,8 @@ export default function MorphingLab({ stepIndex = 0 }) {
         </svg>
       </div>
 
-      {/* LEFT BADGE AREA: STRICTLY FIXED ANCHORED WITH SMOOTH SOFT FADE (ZERO SLIDING!) */}
+      {/* STATUS BADGE: NO 01/02 NUMBERS! CLEAN SMOOTH SOFT FADE TITLE */}
       <div className="shape-precision-badge-anchored">
-        <span className="shape-step-num">0{stepIndex + 1}</span>
         <div className="badge-text-soft-fade">
           <span key={stepIndex} className="badge-fade-item">
             {currentShape.name}

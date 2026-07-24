@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, Sparkles, X, ArrowDown, RefreshCw } from 'lucide-react';
 import { NATURAL_SEARCH_PROMPTS, QUICK_FILTERS } from '../data/prompts';
 import { LISTINGS } from '../data/listings';
@@ -21,7 +21,11 @@ export default function SearchBar({
   const [canvasStep, setCanvasStep] = useState(0);
   const [canvasProgress, setCanvasProgress] = useState(0);
   const [isCanvasDone, setIsCanvasDone] = useState(false);
-  const [dynamicReasoningTrace, setDynamicReasoningTrace] = useState([]);
+  
+  // Asynchronous Multi-Thought Stream Engine State
+  const [thoughtIndex, setThoughtIndex] = useState(0);
+  const [dynamicThoughtStream, setDynamicThoughtStream] = useState([]);
+  const asyncTimerRef = useRef(null);
 
   // Character-by-character typewriter loop
   useEffect(() => {
@@ -99,7 +103,8 @@ export default function SearchBar({
     );
   };
 
-  const generateDynamicReasoning = (promptText, chips) => {
+  // Generate 8-10 Granular Micro-Thoughts for Asynchronous Ticking (2-3 thoughts per status step!)
+  const generateGranularThoughtStream = (promptText, chips) => {
     const textLower = (promptText || '').toLowerCase();
 
     let detectedLocation = "Malta Coastline";
@@ -116,26 +121,52 @@ export default function SearchBar({
       "Luxury Interior & High-Speed Internet"
     );
 
-    let priceConstraint = "standard luxury bracket";
-    if (textLower.includes('1500') || textLower.includes('1,500')) priceConstraint = "under €1,500/month cap";
-    else if (textLower.includes('2500') || textLower.includes('2,500')) priceConstraint = "under €2,500/month cap";
+    let priceCap = "under €2,500/month";
+    if (textLower.includes('1500') || textLower.includes('1,500')) priceCap = "under €1,500/month";
 
     return [
+      // Phase 0 Thoughts (Status: NEURAL AI CORE)
       {
-        stepTitle: `Thinking: Geo-fencing target area -> ${detectedLocation}`,
-        detailText: `Analyzing prompt tokens & spatial boundaries...`
+        title: `Parsing semantic tokens for ${detectedLocation}...`,
+        detail: `Tokenizing natural language parameters & spatial intent...`
       },
       {
-        stepTitle: `Thinking: Filtering 120+ verified listings for ${detectedAmenities}`,
-        detailText: `Evaluating budget constraint: ${priceConstraint}...`
+        title: `Extracting key requirement: ${detectedAmenities}...`,
+        detail: `Analyzing embedding vectors against Malta rental index...`
+      },
+
+      // Phase 1 Thoughts (Status: MALTA GEO-PIN)
+      {
+        title: `Geo-fencing target boundary -> ${detectedLocation}`,
+        detail: `Calculating 3D GIS spatial overlay & walking radiuses...`
       },
       {
-        stepTitle: `Thinking: Cross-referencing live landlord availability in ${detectedLocation}`,
-        detailText: `Computing 98.6% affinity index & escrow status...`
+        title: `Applying financial constraint cap: ${priceCap}`,
+        detail: `Filtering 120+ verified properties for target price tier...`
       },
       {
-        stepTitle: `Thinking: Synthesizing bespoke residence dossier for your prompt...`,
-        detailText: `Finalizing 3D interactive perspectives...`
+        title: `Evaluating proximity to coast & promenade...`,
+        detail: `Checking noise levels & sunlight orientation data...`
+      },
+
+      // Phase 2 Thoughts (Status: VERIFIED LEASE SHIELD)
+      {
+        title: `Verifying 100% landlord escrow contracts...`,
+        detail: `Cross-referencing Land Registry & deposit guarantees...`
+      },
+      {
+        title: `Checking Instant Booking & verified availability...`,
+        detail: `Validating zero-commission landlord compliance...`
+      },
+
+      // Phase 3 Thoughts (Status: BESPOKE VILLA RESIDENCE)
+      {
+        title: `Computing 98.6% affinity index for top matches...`,
+        detail: `Synthesizing interactive 3D virtual tour dossiers...`
+      },
+      {
+        title: `Finalizing tailored residence preview dossier...`,
+        detail: `Preparing direct landlord inquiry channels...`
       }
     ];
   };
@@ -146,14 +177,16 @@ export default function SearchBar({
       setSearchQuery(queryToUse);
     }
 
-    const customTrace = generateDynamicReasoning(queryToUse, attachedChips);
-    setDynamicReasoningTrace(customTrace);
+    const thoughtStream = generateGranularThoughtStream(queryToUse, attachedChips);
+    setDynamicThoughtStream(thoughtStream);
 
     setIsCanvasExpanded(true);
     setIsCanvasDone(false);
     setCanvasStep(0);
+    setThoughtIndex(0);
     setCanvasProgress(0);
 
+    // Smooth overall progress bar tick
     const pTimer = setInterval(() => {
       setCanvasProgress((prev) => {
         if (prev >= 100) {
@@ -164,11 +197,31 @@ export default function SearchBar({
       });
     }, 95);
 
+    // Status Step Progression (~2.4s intervals)
     setTimeout(() => setCanvasStep(1), 2400);
     setTimeout(() => setCanvasStep(2), 4800);
     setTimeout(() => setCanvasStep(3), 7200);
-    
+
+    // ASYNCHRONOUS RANDOM THOUGHT REEL ENGINE!
+    // Thoughts change at RANDOM intervals between 750ms and 1450ms independently of status steps!
+    let currentThoughtIdx = 0;
+    const scheduleNextThought = () => {
+      if (currentThoughtIdx < thoughtStream.length - 1) {
+        // Pick a random interval between 800ms and 1400ms for realistic AI thinking unpredictability!
+        const randomDelay = Math.floor(Math.random() * 600) + 800;
+        asyncTimerRef.current = setTimeout(() => {
+          currentThoughtIdx += 1;
+          setThoughtIndex(currentThoughtIdx);
+          scheduleNextThought();
+        }, randomDelay);
+      }
+    };
+
+    scheduleNextThought();
+
+    // Finish Search after ~9.6 seconds
     setTimeout(() => {
+      if (asyncTimerRef.current) clearTimeout(asyncTimerRef.current);
       setIsCanvasDone(true);
       onExecuteSearch(queryToUse);
     }, 9600);
@@ -194,9 +247,9 @@ export default function SearchBar({
     }
   ];
 
-  const activeReasoningStep = dynamicReasoningTrace[canvasStep] || {
-    stepTitle: "Thinking...",
-    detailText: "Processing search query..."
+  const activeThought = dynamicThoughtStream[thoughtIndex] || {
+    title: "Thinking...",
+    detail: "Processing search query..."
   };
 
   return (
@@ -267,7 +320,7 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* REASONING CANVAS: LEFT SIDE SOFT FADE, RIGHT SIDE SLOT MACHINE REEL */}
+        {/* REASONING CANVAS: STATUS (SOFT FADE, NO NUMBERS) + ASYNCHRONOUS MULTI-THOUGHT SLOT REEL */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
@@ -276,14 +329,14 @@ export default function SearchBar({
 
             {!isCanvasDone ? (
               <div className="morph-reasoning-canvas-slot">
-                {/* Fixed Anchored Icon & Soft Fade Step Badge (Left Side) */}
+                {/* Clean Status Title (No 01/02 numbers) */}
                 <MorphingLab stepIndex={canvasStep} />
 
-                {/* Slot Machine Reel Dynamic Reasoning Balloon (Right Side) */}
+                {/* ASYNCHRONOUS MULTI-THOUGHT SLOT MACHINE REEL */}
                 <div className="slot-machine-reel-container">
-                  <div key={canvasStep} className="slot-reel-item-box">
-                    <span className="slot-reasoning-title">{activeReasoningStep.stepTitle}</span>
-                    <span className="slot-reasoning-detail">{activeReasoningStep.detailText}</span>
+                  <div key={thoughtIndex} className="slot-reel-item-box">
+                    <span className="slot-reasoning-title">{activeThought.title}</span>
+                    <span className="slot-reasoning-detail">{activeThought.detail}</span>
                   </div>
                 </div>
               </div>
