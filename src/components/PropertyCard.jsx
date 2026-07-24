@@ -1,9 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Heart, MapPin, Bed, Bath, Maximize, Star, CheckCircle, ArrowUpRight } from 'lucide-react';
 
-export default function PropertyCard({ listing, isSaved, onToggleSave, onClick }) {
+export default function PropertyCard({ listing, item, isSaved, onToggleSave, onClick, onOpenModal }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0, glowX: 50, glowY: 50 });
   const tickingRef = useRef(false);
+
+  // Safe fallback for listing or item prop
+  const data = listing || item;
+  if (!data) return null;
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -33,10 +37,15 @@ export default function PropertyCard({ listing, isSaved, onToggleSave, onClick }
     setTilt({ x: 0, y: 0, glowX: 50, glowY: 50 });
   };
 
+  const handleCardClick = () => {
+    if (onOpenModal) onOpenModal(data);
+    else if (onClick) onClick(data);
+  };
+
   return (
     <div
       className="property-card 3d-tilt-card"
-      onClick={() => onClick(listing)}
+      onClick={handleCardClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
@@ -48,57 +57,60 @@ export default function PropertyCard({ listing, isSaved, onToggleSave, onClick }
       <div className="card-spotlight-glow" />
 
       <div className="card-image-wrapper">
-        <img src={listing.image} alt={listing.title} loading="lazy" />
-        <div className="card-badge">{listing.type}</div>
+        <img src={data.image} alt={data.title} loading="lazy" />
+        <div className="card-badge">{data.type}</div>
         <button
           className={`card-heart-btn ${isSaved ? 'saved' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
-            onToggleSave(listing.id);
+            onToggleSave(data.id);
           }}
           title={isSaved ? "Remove from saved" : "Save property"}
         >
-          <Heart size={17} fill={isSaved ? "#FF4757" : "none"} color={isSaved ? "#FF4757" : "#94A3B8"} />
+          <Heart size={18} fill={isSaved ? "#FF4757" : "none"} />
         </button>
       </div>
 
       <div className="card-body">
         <div className="card-location">
-          <MapPin size={13} />
-          <span>{listing.location}, MALTA</span>
-          {listing.isVerified && (
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', color: '#E5C158', marginLeft: 'auto', fontSize: '0.72rem', textTransform: 'none', fontWeight: 600 }}>
+          <MapPin size={13} color="#E5C158" />
+          <span>{data.location}, MALTA</span>
+          {data.isVerified && (
+            <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '3px', color: '#E5C158', fontSize: '0.72rem' }}>
               <CheckCircle size={11} /> Verified
             </span>
           )}
         </div>
 
-        <h3 className="card-title">{listing.title}</h3>
+        <h3 className="card-title">{data.title}</h3>
 
         <div className="card-specs">
           <div className="spec-item">
-            <Bed size={14} color="#94A3B8" />
-            <span>{listing.bedrooms} Beds</span>
+            <Bed size={14} />
+            <span>{data.bedrooms} Beds</span>
           </div>
           <div className="spec-item">
-            <Bath size={14} color="#94A3B8" />
-            <span>{listing.bathrooms} Baths</span>
+            <Bath size={14} />
+            <span>{data.bathrooms} Baths</span>
           </div>
           <div className="spec-item">
-            <Maximize size={14} color="#94A3B8" />
-            <span>{listing.area} m²</span>
+            <Maximize size={14} />
+            <span>{data.area} m²</span>
           </div>
-          <div className="spec-item" style={{ marginLeft: 'auto', color: '#E5C158', fontWeight: 600 }}>
-            <Star size={13} fill="#E5C158" />
-            <span>{listing.rating}</span>
-          </div>
+          {data.rating && (
+            <div className="spec-item" style={{ marginLeft: 'auto', color: '#E5C158', fontWeight: 600 }}>
+              <Star size={13} fill="#E5C158" />
+              <span>{data.rating}</span>
+            </div>
+          )}
         </div>
 
         <div className="card-footer">
           <div className="price-tag">
-            <span className="price-amount">{listing.currency}{listing.price.toLocaleString()}</span>
-            <span className="price-period">/{listing.period}</span>
+            <span className="price-amount">{data.currency}{data.price.toLocaleString()}</span>
+            <span className="price-period">/month</span>
           </div>
+
           <button className="view-details-btn">
             <span>View</span>
             <ArrowUpRight size={14} />

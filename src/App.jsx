@@ -82,10 +82,6 @@ export default function App() {
     });
   }, [searchQuery, attachedChips, selectedLocation]);
 
-  const savedListings = useMemo(() => {
-    return LISTINGS.filter((item) => savedIds.includes(item.id));
-  }, [savedIds]);
-
   return (
     <div className="app-container">
       {/* DIRECT DOM 60FPS ZERO-LAG SCROLL PROGRESS BAR */}
@@ -226,6 +222,7 @@ export default function App() {
                 {filteredListings.map((item) => (
                   <PropertyCard
                     key={item.id}
+                    listing={item}
                     item={item}
                     isSaved={savedIds.includes(item.id)}
                     onToggleSave={handleToggleSave}
@@ -241,6 +238,7 @@ export default function App() {
               {filteredListings.map((item) => (
                 <PropertyCard
                   key={item.id}
+                  listing={item}
                   item={item}
                   isSaved={savedIds.includes(item.id)}
                   onToggleSave={handleToggleSave}
