@@ -1,8 +1,7 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
 
 export default function MorphingLab({ stepIndex = 0 }) {
-  // 100% Homogenous Bezier Control Points for all 4 Shapes (No snapping on step 4!)
+  // 100% Homogenous Bezier Control Points for all 4 Shapes (Zero Snapping Across All Transitions)
   const liquidShapes = [
     // 0: Neural AI Core
     {
@@ -22,7 +21,7 @@ export default function MorphingLab({ stepIndex = 0 }) {
       path: "M 12,2 C 18,3.5 21,5.5 21,11.5 C 21,17.5 17,21.5 12,23 C 7,21.5 3,17.5 3,11.5 C 3,5.5 6,3.5 12,2 Z M 12,7 C 14.2,7 16,8.8 16,11 C 16,13 15.5,15.5 12,17.5 C 8.5,15.5 8,13 8,11 C 8,8.8 9.8,7 12,7 Z"
     },
 
-    // 3: Bespoke Villa Residence (Re-engineered Bezier curves aligned 100% smoothly with Shield!)
+    // 3: Bespoke Villa Residence
     {
       name: "BESPOKE VILLA RESIDENCE",
       path: "M 12,2.5 C 17.5,5 21.5,8 18.5,21.5 C 14,21.5 10,21.5 5.5,21.5 C 2.5,8 6.5,5 12,2.5 Z M 12,7.5 C 14.5,9.5 16,11.5 14.5,17.5 C 12,17.5 10.5,17.5 9.5,17.5 C 8,11.5 9.5,9.5 12,7.5 Z"
@@ -33,7 +32,7 @@ export default function MorphingLab({ stepIndex = 0 }) {
 
   return (
     <div className="morph-stage-wrapper">
-      {/* FIXED ANCHORED STAGE FOR ICON - NEVER SHIFTS OR JUMPS */}
+      {/* FIXED ANCHORED STAGE FOR ICON */}
       <div className="morph-fixed-icon-box">
         <svg viewBox="0 0 24 24" className="svg-precision-canvas">
           <defs>
@@ -75,10 +74,14 @@ export default function MorphingLab({ stepIndex = 0 }) {
         </svg>
       </div>
 
-      {/* ANCHORED FIXED STATUS BADGE BELOW ICON - ZERO LAYOUT SHIFT */}
-      <div className="shape-precision-badge-fixed">
+      {/* STRICTLY ANCHORED RIGID BADGE WITH FIXED MIN-WIDTH (ZERO HORIZONTAL LAYOUT SHIFT) */}
+      <div className="shape-precision-badge-anchored">
         <span className="shape-step-num">0{stepIndex + 1}</span>
-        <span className="shape-step-title">{currentShape.name}</span>
+        <div className="badge-text-reel-slot">
+          <span key={stepIndex} className="badge-reel-item">
+            {currentShape.name}
+          </span>
+        </div>
       </div>
     </div>
   );

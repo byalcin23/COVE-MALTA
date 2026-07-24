@@ -267,7 +267,7 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* CHATGPT / CLAUDE MINIMALIST REASONING CANVAS */}
+        {/* SLOT MACHINE REEL STYLE DYNAMIC REASONING CANVAS */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
@@ -275,15 +275,15 @@ export default function SearchBar({
             </div>
 
             {!isCanvasDone ? (
-              <div className="morph-reasoning-canvas-chatgpt">
+              <div className="morph-reasoning-canvas-slot">
                 {/* Fixed Anchored Icon Stage */}
                 <MorphingLab stepIndex={canvasStep} />
 
-                {/* ChatGPT / Claude Style Pulsing Single-Line Reasoning Status */}
-                <div className="chatgpt-reasoning-status-box">
-                  <div key={canvasStep} className="chatgpt-status-fade">
-                    <span className="chatgpt-reasoning-title">{activeReasoningStep.stepTitle}</span>
-                    <span className="chatgpt-reasoning-detail">{activeReasoningStep.detailText}</span>
+                {/* SLOT MACHINE REEL REASONING BUBBLE (STRICTLY ANCHORED) */}
+                <div className="slot-machine-reel-container">
+                  <div key={canvasStep} className="slot-reel-item-box">
+                    <span className="slot-reasoning-title">{activeReasoningStep.stepTitle}</span>
+                    <span className="slot-reasoning-detail">{activeReasoningStep.detailText}</span>
                   </div>
                 </div>
               </div>

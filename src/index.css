@@ -47,17 +47,17 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-family: 'Outfit', sans-serif;
 }
 
-/* FIXED ANCHORED ICON STAGE (ZERO LAYOUT SHIFT OR HORIZONTAL JUMPING) */
+/* STRICTLY ANCHORED RIGID BADGE (ZERO LAYOUT SHIFT OR JUMPING) */
 .morph-stage-wrapper {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   flex-shrink: 0;
 }
 
 .morph-fixed-icon-box {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -76,17 +76,18 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   will-change: d;
 }
 
-/* ANCHORED FIXED BADGE BELOW/SIDE OF ICON */
-.shape-precision-badge-fixed {
+/* FIXED ANCHORED BADGE WITH INTERNAL VERTICAL SLOT REEL FOR TITLE */
+.shape-precision-badge-anchored {
   display: flex;
   align-items: center;
   gap: 8px;
   background: rgba(15, 19, 29, 0.9);
   border: 1px solid rgba(229, 193, 88, 0.28);
-  padding: 5px 12px;
+  padding: 5px 14px;
   border-radius: var(--radius-pill);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
+  width: 220px; /* FIXED ANCHORED WIDTH - NEVER SHIFTS CONTAINER! */
 }
 
 .shape-step-num {
@@ -94,55 +95,74 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-size: 0.78rem;
   font-weight: 800;
   color: var(--accent-cyan);
+  flex-shrink: 0;
 }
 
-.shape-step-title {
+.badge-text-reel-slot {
+  height: 18px;
+  overflow: hidden;
+  position: relative;
+  flex: 1;
+}
+
+.badge-reel-item {
+  display: block;
   font-family: 'Outfit', sans-serif;
   font-size: 0.78rem;
   font-weight: 700;
   color: #FFFFFF;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
   white-space: nowrap;
+  animation: slotReelIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* CHATGPT / CLAUDE STYLE MINIMALIST REASONING STYLES */
-.morph-reasoning-canvas-chatgpt {
+/* SLOT MACHINE REEL STYLE DYNAMIC REASONING CONTAINER */
+.morph-reasoning-canvas-slot {
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 6px 12px;
+  padding: 8px 16px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(229, 193, 88, 0.18);
   border-radius: 20px;
+  width: 100%;
 }
 
-.chatgpt-reasoning-status-box {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  text-align: left;
+.slot-machine-reel-container {
+  height: 44px;
   overflow: hidden;
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
-.chatgpt-status-fade {
+.slot-reel-item-box {
   display: flex;
   flex-direction: column;
-  animation: chatgptFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  animation: slotReelIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes chatgptFade {
-  0% { opacity: 0; transform: translateY(4px); }
-  100% { opacity: 1; transform: translateY(0); }
+@keyframes slotReelIn {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.chatgpt-reasoning-title {
+.slot-reasoning-title {
   font-size: 0.88rem;
   font-weight: 600;
   color: #FFFFFF;
   line-height: 1.3;
 }
 
-.chatgpt-reasoning-detail {
+.slot-reasoning-detail {
   font-size: 0.76rem;
   color: var(--text-body);
   margin-top: 2px;
