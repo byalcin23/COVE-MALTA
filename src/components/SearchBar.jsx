@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Sparkles, X, Brain, Wand2, ShieldCheck, ArrowDown, RefreshCw, Star, Cpu } from 'lucide-react';
+import { Search, Sparkles, X, Wand2, ShieldCheck, ArrowDown, RefreshCw } from 'lucide-react';
 import { NATURAL_SEARCH_PROMPTS, QUICK_FILTERS } from '../data/prompts';
 import { LISTINGS } from '../data/listings';
+import MorphingThreadIcon from './MorphingThreadIcon';
 
 export default function SearchBar({
   searchQuery,
@@ -104,14 +105,12 @@ export default function SearchBar({
   const generateDynamicReasoning = (promptText, chips) => {
     const textLower = (promptText || '').toLowerCase();
 
-    // Detect location in prompt or fallback
     let detectedLocation = "Malta Coastline";
     if (textLower.includes('sliema')) detectedLocation = "Sliema Waterfront";
     else if (textLower.includes('st. julian') || textLower.includes('julian')) detectedLocation = "St. Julian's Marina";
     else if (textLower.includes('valletta')) detectedLocation = "Valletta Historic Core";
     else if (textLower.includes('gozo')) detectedLocation = "Gozo Countryside & Citadel";
 
-    // Detect key features/chips
     const chipLabels = chips.map(c => c.label).join(' + ');
     const detectedAmenities = chipLabels || (
       textLower.includes('garage') ? "Private Garage & Parking" :
@@ -120,34 +119,24 @@ export default function SearchBar({
       "Luxury Interior & High-Speed Internet"
     );
 
-    // Price cap detection
     let priceConstraint = "standard luxury bracket";
     if (textLower.includes('1500') || textLower.includes('1,500')) priceConstraint = "under €1,500/month cap";
     else if (textLower.includes('2500') || textLower.includes('2,500')) priceConstraint = "under €2,500/month cap";
-    else if (textLower.includes('penthouse') || textLower.includes('luxury')) priceConstraint = "ultra-high end tier";
 
     return [
       {
-        icon: Brain,
-        color: "#E5C158",
         stepTitle: `Parsing intent: Geo-fencing Target Area -> [${detectedLocation}]`,
         detailText: `Extracting semantic tokens: ${promptText ? `"${promptText.slice(0, 45)}..."` : 'Default curated parameters'}`
       },
       {
-        icon: Cpu,
-        color: "#38BDF8",
         stepTitle: `Filtering 120+ registries for mandatory features -> [${detectedAmenities}]`,
         detailText: `Evaluating budget constraint: ${priceConstraint} with verified landlord accreditation.`
       },
       {
-        icon: ShieldCheck,
-        color: "#E5C158",
         stepTitle: `Cross-referencing live availability in ${detectedLocation} registry...`,
         detailText: `Computing 98.6% affinity match score & calculating direct landlord contact index.`
       },
       {
-        icon: Wand2,
-        color: "#38BDF8",
         stepTitle: `Synthesizing final bespoke residence lineup for your prompt...`,
         detailText: `Finalizing 3D interactive perspectives and map pin coordinates.`
       }
@@ -160,11 +149,9 @@ export default function SearchBar({
       setSearchQuery(queryToUse);
     }
 
-    // Dynamically generate customized reasoning trace based on the user's specific prompt & chips!
     const customTrace = generateDynamicReasoning(queryToUse, attachedChips);
     setDynamicReasoningTrace(customTrace);
 
-    // Trigger In-Page Canvas Expansion
     setIsCanvasExpanded(true);
     setIsCanvasDone(false);
     setCanvasStep(0);
@@ -279,7 +266,7 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* DYNAMIC PROMPT-SENSITIVE IN-PAGE CANVAS REASONING TRACE */}
+        {/* CONTINUOUS MORPHING THREAD REASONING CANVAS */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
@@ -287,25 +274,29 @@ export default function SearchBar({
             </div>
 
             {!isCanvasDone ? (
-              <div className="inpage-reasoning-list">
-                {dynamicReasoningTrace.map((step, idx) => {
-                  const StepIcon = step.icon;
-                  const isActive = canvasStep >= idx;
+              <div className="morph-reasoning-canvas">
+                {/* Continuous String Morphing Icon Animation */}
+                <MorphingThreadIcon stepIndex={canvasStep} />
 
-                  return (
-                    <div key={idx} className={`inpage-step ${isActive ? 'active' : ''}`}>
-                      <StepIcon size={16} color={step.color} className="step-icon-glow" />
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span style={{ fontWeight: 600 }}>{step.stepTitle}</span>
-                        {isActive && (
-                          <span style={{ fontSize: '0.76rem', color: '#94A3B8', marginTop: '2px' }}>
-                            {step.detailText}
-                          </span>
-                        )}
+                {/* Live Reasoning Trace Text */}
+                <div className="inpage-reasoning-list">
+                  {dynamicReasoningTrace.map((step, idx) => {
+                    const isActive = canvasStep >= idx;
+
+                    return (
+                      <div key={idx} className={`inpage-step ${isActive ? 'active' : ''}`}>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <span style={{ fontWeight: 600, fontSize: '0.88rem' }}>{step.stepTitle}</span>
+                          {isActive && (
+                            <span style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '2px' }}>
+                              {step.detailText}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <div className="inpage-results-box">
