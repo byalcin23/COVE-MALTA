@@ -47,53 +47,116 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-family: 'Outfit', sans-serif;
 }
 
-/* CONTINUOUS MORPHING THREAD ANIMATION STYLES */
+/* INTERACTIVE MORPHING LAB STYLES */
 .morph-reasoning-canvas {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  gap: 14px;
   padding: 4px 0;
 }
 
-.morph-thread-wrapper {
-  width: 58px;
-  height: 58px;
-  flex-shrink: 0;
-  position: relative;
+.morph-lab-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(229, 193, 88, 0.18);
+  border-radius: 20px;
+  padding: 12px 14px;
+  width: 100%;
+}
+
+.morph-lab-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.lab-opt-btn {
+  background: rgba(15, 19, 29, 0.8);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.lab-opt-btn:hover {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.lab-opt-btn.active {
+  background: rgba(229, 193, 88, 0.16);
+  border-color: var(--accent-primary);
+  color: #FFFFFF;
+  box-shadow: 0 0 14px rgba(229, 193, 88, 0.2);
+}
+
+.morph-lab-viewport {
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-.morph-thread-svg {
+.svg-morph-canvas {
   width: 100%;
   height: 100%;
   overflow: visible;
 }
 
-.continuous-string-path {
-  transition: d 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* OPTION 2: SACRED 12-NODE SHIFT (ULTRA-SMOOTH MIGRATION) */
+.sacred-migrating-string {
+  transition: d 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: d;
 }
 
-.orbit-laser-ring {
-  transform-origin: center;
-  animation: laserSpin 5s linear infinite;
+.sacred-migrating-node {
+  transition: cx 0.75s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: cx, cy;
 }
 
-@keyframes laserSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* OPTION 1: FLUID RIBBON */
+.fluid-ribbon-path {
+  transition: d 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation: ribbonPulse 2s ease-in-out infinite alternate;
 }
 
-.stardust-lead-tip {
-  transform-origin: center;
-  animation: stardustPulse 1.2s ease-in-out infinite alternate;
+@keyframes ribbonPulse {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 30; }
 }
 
-@keyframes stardustPulse {
-  0% { transform: scale(0.6); opacity: 0.5; }
-  100% { transform: scale(1.3); opacity: 1; filter: drop-shadow(0 0 6px #E5C158); }
+/* OPTION 3: CONSTELLATION STARDUST FLUX */
+.stardust-flux-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.flux-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-primary);
+  transform: translate(-50%, -50%);
+  transition: left 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: left, top;
 }
 
 /* PROMINENT HERO TRUST & METRICS GRID BAR */

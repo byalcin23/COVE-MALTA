@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Sparkles, X, Wand2, ShieldCheck, ArrowDown, RefreshCw } from 'lucide-react';
 import { NATURAL_SEARCH_PROMPTS, QUICK_FILTERS } from '../data/prompts';
 import { LISTINGS } from '../data/listings';
-import MorphingThreadIcon from './MorphingThreadIcon';
+import MorphingLab from './MorphingLab';
 
 export default function SearchBar({
   searchQuery,
@@ -22,6 +22,9 @@ export default function SearchBar({
   const [canvasProgress, setCanvasProgress] = useState(0);
   const [isCanvasDone, setIsCanvasDone] = useState(false);
   const [dynamicReasoningTrace, setDynamicReasoningTrace] = useState([]);
+  
+  // Active Morphing Prototype Option (1, 2, or 3)
+  const [activeMorphOption, setActiveMorphOption] = useState(2);
 
   // Character-by-character typewriter loop
   useEffect(() => {
@@ -53,7 +56,6 @@ export default function SearchBar({
     return () => clearTimeout(timer);
   }, [typedLength, isTyping, promptIndex, searchQuery, attachedChips, isCanvasExpanded]);
 
-  // Click quick filter chip
   const handleChipClick = (filter) => {
     const exists = attachedChips.some((c) => c.query === filter.query);
     if (exists) {
@@ -67,7 +69,6 @@ export default function SearchBar({
     setAttachedChips(attachedChips.filter((c) => c.query !== query));
   };
 
-  // Helper to render prefix, magicHighlight, and suffix
   const renderMagicOverlay = () => {
     const currentObj = NATURAL_SEARCH_PROMPTS[promptIndex];
     const prefixLen = currentObj.prefix.length;
@@ -101,7 +102,6 @@ export default function SearchBar({
     );
   };
 
-  // Generate customized, dynamic LLM reasoning steps tailored to the user's exact prompt & attached chips!
   const generateDynamicReasoning = (promptText, chips) => {
     const textLower = (promptText || '').toLowerCase();
 
@@ -184,7 +184,6 @@ export default function SearchBar({
     }
   };
 
-  // 2 Top Teaser Mock Match Properties
   const topMockMatches = [
     {
       ...LISTINGS[0],
@@ -266,7 +265,7 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* CONTINUOUS MORPHING THREAD REASONING CANVAS */}
+        {/* INTERACTIVE GEOMETRIC MORPHING LAB CANVAS */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
@@ -275,8 +274,12 @@ export default function SearchBar({
 
             {!isCanvasDone ? (
               <div className="morph-reasoning-canvas">
-                {/* Continuous String Morphing Icon Animation */}
-                <MorphingThreadIcon stepIndex={canvasStep} />
+                {/* Interactive Morphing Lab Viewport */}
+                <MorphingLab
+                  stepIndex={canvasStep}
+                  activeOption={activeMorphOption}
+                  setActiveOption={setActiveMorphOption}
+                />
 
                 {/* Live Reasoning Trace Text */}
                 <div className="inpage-reasoning-list">
