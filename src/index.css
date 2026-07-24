@@ -894,6 +894,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   min-width: 0;
 }
 
+/* SMOOTH RIGHT-SCROLLING TYPEWRITER PROMPT OVERLAY */
 .prompt-overlay {
   position: absolute;
   top: 0;
@@ -908,9 +909,16 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-weight: 400;
   z-index: 1;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   padding-right: 8px;
+  scroll-behavior: smooth;
+}
+
+.prompt-overlay::-webkit-scrollbar {
+  display: none;
 }
 
 .typing-cursor {
@@ -920,6 +928,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   background-color: var(--accent-primary);
   margin-left: 4px;
   animation: blink 0.8s infinite;
+  flex-shrink: 0;
 }
 
 @keyframes blink {
@@ -1465,7 +1474,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   z-index: 30;
 }
 
-/* TARGETED MOBILE MEDIA QUERIES (FIXING ALL 5 USER ISSUES) */
+/* TARGETED MOBILE MEDIA QUERIES */
 @media (max-width: 768px) {
   /* HIDE FLOATING WATER BACKGROUND PAPERS ON MOBILE COMPLETELY */
   .water-paper-container {
@@ -1474,29 +1483,24 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
 
   /* PREVENT iOS MOBILE INPUT FOCUS AUTO-ZOOM (FONT-SIZE >= 16px) */
   .search-input {
-    font-size: 16px !important; /* Disables iOS auto-zoom on click! */
+    font-size: 16px !important;
     width: 100%;
     min-width: 0;
   }
 
-  /* PROMPT TYPEWRITER OVERLAY FIT ON MOBILE */
+  /* PROMPT TYPEWRITER OVERLAY SMOOTH RIGHT SCROLL ON MOBILE */
   .prompt-overlay {
     font-size: 0.86rem;
     padding-right: 4px;
     width: 100%;
-    max-width: calc(100% - 10px);
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 100%;
     white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
   }
 
-  .prompt-overlay span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* NAVBAR MOBILE STYLES */
   .navbar {
     padding: 10px 14px;
     max-width: 100vw;
@@ -1526,10 +1530,9 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   }
 
   .nav-btn span {
-    display: none; /* Hide text on small screen nav buttons */
+    display: none;
   }
 
-  /* HERO SECTION MOBILE STYLES */
   .hero-section {
     padding: 20px 12px 14px;
   }
@@ -1549,7 +1552,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     line-height: 1.4;
   }
 
-  /* SEARCH CONTAINER MOBILE STYLES */
   .search-container {
     padding: 0 2px;
     margin-bottom: 12px;
@@ -1578,7 +1580,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     border-radius: var(--radius-pill);
   }
 
-  /* STACK HERO TRUST METRICS GRID CLEANLY ON MOBILE */
   .cove-trust-metrics-grid {
     grid-template-columns: 1fr;
     gap: 8px;
@@ -1605,7 +1606,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     font-size: 0.7rem;
   }
 
-  /* EXPANDED AI REASONING CANVAS & MORPHING ICON MOBILE FIX */
   .morph-reasoning-canvas-slot {
     flex-direction: column;
     align-items: center;
@@ -1671,7 +1671,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     text-align: center;
   }
 
-  /* TEASER MATCH CARDS & RESULTS DOSSIER PLATE MOBILE FIX (CENTERED!) */
   .inpage-teaser-grid {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -1698,7 +1697,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     font-size: 0.9rem;
   }
 
-  /* DOSSIER PLATE PERFECTLY CENTERED ON MOBILE */
   .results-dossier-plate {
     padding: 18px 12px;
     border-radius: 20px;

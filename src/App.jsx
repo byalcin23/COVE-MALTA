@@ -49,31 +49,30 @@ export default function App() {
     );
   };
 
-  // Smart Natural Language & Forgiving Keyword Filter Logic
+  // 100% DEFENSIVE SAFE NATURAL SEARCH FILTER LOGIC (NO ITEM.TAGS UNCAUGHT EXCEPTION)
   const filteredListings = useMemo(() => {
     return LISTINGS.filter((item) => {
+      if (!item) return false;
       if (selectedLocation !== 'All Malta' && item.location !== selectedLocation) {
         return false;
       }
 
-      if (!searchQuery && attachedChips.length === 0) {
-        return true;
-      }
+      const featuresList = Array.isArray(item.features) ? item.features : (Array.isArray(item.tags) ? item.tags : []);
+      const featuresStr = featuresList.join(' ');
+      const combinedText = `${item.title || ''} ${item.location || ''} ${item.description || ''} ${featuresStr}`.toLowerCase();
 
-      const combinedText = `${item.title} ${item.location} ${item.description} ${item.tags.join(' ')}`.toLowerCase();
-
-      const chipQueries = attachedChips.map((c) => c.query.toLowerCase());
+      const chipQueries = attachedChips.map((c) => (c.query || '').toLowerCase());
       const chipMatch = chipQueries.every((q) => combinedText.includes(q));
 
       if (!chipMatch) return false;
 
-      if (!searchQuery.trim()) return true;
+      if (!searchQuery || !searchQuery.trim()) return true;
 
       const userTokens = searchQuery
         .toLowerCase()
         .replace(/[^\w\s]/gi, '')
         .split(/\s+/)
-        .filter((t) => t.length > 2);
+        .filter((t) => t.length > 0);
 
       if (userTokens.length === 0) return true;
 

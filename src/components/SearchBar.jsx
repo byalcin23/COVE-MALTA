@@ -27,6 +27,9 @@ export default function SearchBar({
   const [dynamicThoughtStream, setDynamicThoughtStream] = useState([]);
   const asyncTimerRef = useRef(null);
 
+  // Ref for typewriter prompt smooth right-scroll
+  const promptOverlayRef = useRef(null);
+
   // Character-by-character typewriter loop
   useEffect(() => {
     if (searchQuery || attachedChips.length > 0 || isCanvasExpanded) return;
@@ -56,6 +59,13 @@ export default function SearchBar({
 
     return () => clearTimeout(timer);
   }, [typedLength, isTyping, promptIndex, searchQuery, attachedChips, isCanvasExpanded]);
+
+  // Smoothly auto-scroll prompt overlay to the right as text types out!
+  useEffect(() => {
+    if (promptOverlayRef.current) {
+      promptOverlayRef.current.scrollLeft = promptOverlayRef.current.scrollWidth;
+    }
+  }, [typedLength]);
 
   const handleChipClick = (filter) => {
     const exists = attachedChips.some((c) => c.query === filter.query);
@@ -118,23 +128,22 @@ export default function SearchBar({
       textLower.includes('garage') ? "Private Garage & Parking" :
       textLower.includes('pool') ? "Swimming Pool & Terrace" :
       textLower.includes('sea') ? "Seafront Mediterranean View" :
-      "Luxury Interior & High-Speed Internet"
+      "High-Speed Fiber & Luxury Finishes"
     );
 
-    let priceCap = "under €2,500/month";
-    if (textLower.includes('1500') || textLower.includes('1,500')) priceCap = "under €1,500/month";
+    const priceCap = textLower.includes('1500') ? "€1,500/mo" : "€2,500/mo";
 
     return [
       // Phase 0 Thoughts (Status: NEURAL AI CORE)
       {
-        title: `Parsing semantic tokens for ${detectedLocation}...`,
-        detail: `Tokenizing natural language parameters & spatial intent...`,
-        weight: 1200 // Quick initial tokenization
+        title: `Analyzing natural query structure...`,
+        detail: `Extracting key requirement: ${detectedAmenities}...`,
+        weight: 1400
       },
       {
-        title: `Extracting key requirement: ${detectedAmenities}...`,
+        title: `Parsing intent tokens & spatial preferences...`,
         detail: `Analyzing embedding vectors against Malta rental index...`,
-        weight: 2100 // Longer vector embedding calculation
+        weight: 2100
       },
 
       // Phase 1 Thoughts (Status: MALTA GEO-PIN)
@@ -146,7 +155,7 @@ export default function SearchBar({
       {
         title: `Applying financial constraint cap: ${priceCap}`,
         detail: `Filtering 120+ verified properties for target price tier...`,
-        weight: 2400 // Deep budget matrix scan
+        weight: 2400
       },
       {
         title: `Evaluating proximity to coast & promenade...`,
@@ -158,7 +167,7 @@ export default function SearchBar({
       {
         title: `Verifying 100% landlord escrow contracts...`,
         detail: `Cross-referencing Land Registry & deposit guarantees...`,
-        weight: 2700 // Deep security & escrow audit (takes longer!)
+        weight: 2700
       },
       {
         title: `Checking Instant Booking & verified availability...`,
@@ -170,7 +179,7 @@ export default function SearchBar({
       {
         title: `Computing 98.6% affinity index for top matches...`,
         detail: `Synthesizing interactive 3D virtual tour dossiers...`,
-        weight: 2200 // 3D synthesis calculation
+        weight: 2200
       },
       {
         title: `Finalizing tailored residence preview dossier...`,
@@ -181,62 +190,67 @@ export default function SearchBar({
   };
 
   const handleSearchClick = () => {
-    const queryToUse = searchQuery || NATURAL_SEARCH_PROMPTS[promptIndex].fullText;
-    if (!searchQuery) {
-      setSearchQuery(queryToUse);
-    }
+    const finalSearchText = searchQuery || NATURAL_SEARCH_PROMPTS[promptIndex].fullText;
 
-    const thoughtStream = generateGranularThoughtStream(queryToUse, attachedChips);
-    setDynamicThoughtStream(thoughtStream);
+    if (asyncTimerRef.current) clearTimeout(asyncTimerRef.current);
+
+    const stream = generateGranularThoughtStream(finalSearchText, attachedChips);
+    setDynamicThoughtStream(stream);
 
     setIsCanvasExpanded(true);
-    setIsCanvasDone(false);
     setCanvasStep(0);
-    setThoughtIndex(0);
     setCanvasProgress(0);
+    setThoughtIndex(0);
+    setIsCanvasDone(false);
 
-    // Smooth overall progress bar tick (~11.5s total time for rich inspection)
-    const pTimer = setInterval(() => {
-      setCanvasProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(pTimer);
-          return 100;
-        }
-        return prev + 1;
-      });
-    }, 115);
+    // Smoothly scroll to top of search box so AI Canvas is in view
+    const searchElem = document.querySelector('.search-container');
+    if (searchElem) searchElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    // Status Step Progression (~2.8s intervals)
-    setTimeout(() => setCanvasStep(1), 2800);
-    setTimeout(() => setCanvasStep(2), 5600);
-    setTimeout(() => setCanvasStep(3), 8400);
+    // Step 0: NEURAL AI CORE (0ms)
+    // Step 1: MALTA GEO-PIN (~2400ms)
+    const t1 = setTimeout(() => setCanvasStep(1), 2400);
 
-    // ORGANIC VARIABLE DELAY AI THOUGHT REEL ENGINE!
-    // Each thought stays on screen for its unique organic weight + random jitter (1200ms - 2700ms)
+    // Step 2: VERIFIED LEASE SHIELD (~5200ms)
+    const t2 = setTimeout(() => setCanvasStep(2), 5200);
+
+    // Step 3: BESPOKE VILLA RESIDENCE (~7600ms)
+    const t3 = setTimeout(() => setCanvasStep(3), 7600);
+
+    // Schedule Asynchronous Micro-Thoughts with Organic Variable Delay
     let currentThoughtIdx = 0;
-    const scheduleNextThought = () => {
-      if (currentThoughtIdx < thoughtStream.length - 1) {
-        const currentItem = thoughtStream[currentThoughtIdx];
-        // Organic delay: base weight + random jitter (+/- 250ms) for authentic AI processing feel!
-        const organicJitter = Math.floor(Math.random() * 500) - 250;
-        const finalDelay = Math.max(1200, currentItem.weight + organicJitter);
 
-        asyncTimerRef.current = setTimeout(() => {
-          currentThoughtIdx += 1;
-          setThoughtIndex(currentThoughtIdx);
-          scheduleNextThought();
-        }, finalDelay);
-      }
+    const scheduleNextThought = () => {
+      if (currentThoughtIdx >= stream.length - 1) return;
+
+      const currentThoughtObj = stream[currentThoughtIdx];
+      // Organic jitter (+/- 250ms) to feel natural
+      const jitter = (Math.random() - 0.5) * 500;
+      const delay = Math.max(1000, currentThoughtObj.weight + jitter);
+
+      asyncTimerRef.current = setTimeout(() => {
+        currentThoughtIdx++;
+        setThoughtIndex(currentThoughtIdx);
+        scheduleNextThought();
+      }, delay);
     };
 
     scheduleNextThought();
 
-    // Finish Search cleanly after ~11.5 seconds
-    setTimeout(() => {
-      if (asyncTimerRef.current) clearTimeout(asyncTimerRef.current);
-      setIsCanvasDone(true);
-      onExecuteSearch(queryToUse);
-    }, 11500);
+    // Progress Bar Animation (0% to 100% over 8.8s)
+    const startTime = Date.now();
+    const totalDuration = 8800;
+    const progressInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, Math.floor((elapsed / totalDuration) * 100));
+      setCanvasProgress(pct);
+
+      if (pct >= 100) {
+        clearInterval(progressInterval);
+        setIsCanvasDone(true);
+        if (onExecuteSearch) onExecuteSearch(finalSearchText);
+      }
+    }, 50);
   };
 
   const scrollToResults = () => {
@@ -284,6 +298,7 @@ export default function SearchBar({
 
             {!searchQuery && attachedChips.length === 0 && (
               <div 
+                ref={promptOverlayRef}
                 className="prompt-overlay" 
                 onClick={() => setSearchQuery(NATURAL_SEARCH_PROMPTS[promptIndex].fullText)} 
                 style={{ cursor: 'pointer' }}
@@ -320,10 +335,7 @@ export default function SearchBar({
                 <span>{chip.label}</span>
                 <button
                   className="tag-remove-btn"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeAttachedChip(chip.query);
-                  }}
+                  onClick={() => removeAttachedChip(chip.query)}
                 >
                   <X size={11} />
                 </button>
@@ -332,61 +344,61 @@ export default function SearchBar({
           </div>
         )}
 
-        {/* REASONING CANVAS: ORGANIC VARIABLE DELAY AI THOUGHT REEL */}
+        {/* In-Page Expandable AI Reasoning Canvas */}
         {isCanvasExpanded && (
           <div className="inpage-canvas-body">
             <div className="inpage-progress-bar">
-              <div className="inpage-progress-fill" style={{ width: `${canvasProgress}%` }}></div>
+              <div
+                className="inpage-progress-fill"
+                style={{ width: `${canvasProgress}%` }}
+              />
             </div>
 
-            {!isCanvasDone ? (
-              <div className="morph-reasoning-canvas-slot">
-                {/* Clean Status Title (No 01/02 numbers) */}
-                <MorphingLab stepIndex={canvasStep} />
+            <div className="morph-reasoning-canvas-slot">
+              <MorphingLab stepIndex={canvasStep} />
 
-                {/* ORGANIC VARIABLE DELAY AI THOUGHT SLOT MACHINE REEL */}
-                <div className="slot-machine-reel-container">
-                  <div key={thoughtIndex} className="slot-reel-item-box">
-                    <span className="slot-reasoning-title">{activeThought.title}</span>
-                    <span className="slot-reasoning-detail">{activeThought.detail}</span>
-                  </div>
+              <div className="slot-machine-reel-container">
+                <div key={`thought-reel-${thoughtIndex}`} className="slot-reel-item-box">
+                  <span className="slot-reasoning-title">{activeThought.title}</span>
+                  <span className="slot-reasoning-detail">{activeThought.detail}</span>
                 </div>
               </div>
-            ) : (
+            </div>
+
+            {/* Results Teaser Row when calculation finishes */}
+            {isCanvasDone && (
               <div className="inpage-results-box">
                 <div className="inpage-results-header">
                   <div className="inpage-results-badge">
-                    <Sparkles size={14} color="#E5C158" />
-                    <span>COVE AI Matched Top 2 Prime Residences</span>
+                    <Sparkles size={16} color="#E5C158" />
+                    <span>2 Match Teasers Ready</span>
                   </div>
                   <button className="inpage-refine-btn" onClick={() => setIsCanvasExpanded(false)}>
-                    <RefreshCw size={12} />
-                    <span>Refine Prompt</span>
+                    <RefreshCw size={12} /> Refine Prompt
                   </button>
                 </div>
 
-                {/* 2 Top Teaser Match Cards Inside Canvas */}
                 <div className="inpage-teaser-grid">
-                  {topMockMatches.map((item) => (
-                    <div key={item.id} className="inpage-teaser-card" onClick={scrollToResults}>
-                      <img src={item.image} alt={item.title} />
+                  {topMockMatches.map((match) => (
+                    <div
+                      key={`teaser-${match.id}`}
+                      className="inpage-teaser-card"
+                      onClick={scrollToResults}
+                    >
+                      <img src={match.image} alt={match.title} />
                       <div className="teaser-card-info">
-                        <div className="teaser-match-tag">
-                          <Sparkles size={10} color="#E5C158" />
-                          <span>{item.matchPercentage}</span>
-                        </div>
-                        <h4 className="teaser-title">{item.title}</h4>
-                        <div className="teaser-sub-note">{item.matchReason}</div>
-                        <div className="teaser-price">{item.currency}{item.price.toLocaleString()}/m</div>
+                        <div className="teaser-match-tag">✨ {match.matchPercentage}</div>
+                        <div className="teaser-title">{match.title}</div>
+                        <div className="teaser-sub-note">{match.matchReason}</div>
+                        <div className="teaser-price">{match.currency}{match.price.toLocaleString()}/mo</div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Explore All Matches CTA */}
                 <button className="inpage-explore-btn" onClick={scrollToResults}>
-                  <span>Explore All COVE Matches Below ↓</span>
-                  <ArrowDown size={15} />
+                  <span>Explore Full Verified Listings Below</span>
+                  <ArrowDown size={16} />
                 </button>
               </div>
             )}
@@ -394,17 +406,17 @@ export default function SearchBar({
         )}
       </div>
 
-      {/* Quick Filter Chips */}
+      {/* Quick Salt & Flour Filter Chips */}
       <div className="quick-chips-container">
-        {QUICK_FILTERS.map((chip, idx) => {
-          const isAttached = attachedChips.some((c) => c.query === chip.query);
+        {QUICK_FILTERS.map((filter) => {
+          const isActive = attachedChips.some((c) => c.query === filter.query);
           return (
             <button
-              key={idx}
-              className={`chip-btn ${isAttached ? 'active' : ''}`}
-              onClick={() => handleChipClick(chip)}
+              key={filter.query}
+              className={`chip-btn ${isActive ? 'active' : ''}`}
+              onClick={() => handleChipClick(filter)}
             >
-              {isAttached ? `✓ ${chip.label}` : chip.label}
+              {filter.label}
             </button>
           );
         })}
