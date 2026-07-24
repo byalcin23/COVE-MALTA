@@ -47,9 +47,9 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   font-family: 'Outfit', sans-serif;
 }
 
-/* LIQUID SILK RIBBON MORPHING STYLES (NO VISIBLE DOTS - PURE FLUID VECTOR) */
+/* LIQUID SILK RIBBON MORPHING STYLES (100% HOMOGENOUS BEZIER TOPOLOGY) */
 .liquid-silk-path {
-  transition: d 1.4s cubic-bezier(0.25, 1, 0.35, 1);
+  transition: d 1.8s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: d;
 }
 
