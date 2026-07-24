@@ -15,30 +15,25 @@ export default function App() {
   const [savedIds, setSavedIds] = useState(['mlt-001']);
   const [selectedListing, setSelectedListing] = useState(null);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'split' | 'map'
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [selectedLogoIndex, setSelectedLogoIndex] = useState(0);
   const [isCanvasExpanded, setIsCanvasExpanded] = useState(false);
 
   // Search Results Submission state
   const [isSearchResultsActive, setIsSearchResultsActive] = useState(false);
 
-  const tickingRef = useRef(false);
+  const progressBarRef = useRef(null);
 
-  // Optimized high-performance scroll listener
+  // Direct DOM zero-lag 60fps real-time scroll progress bar
   useEffect(() => {
     const handleScroll = () => {
-      if (!tickingRef.current) {
-        requestAnimationFrame(() => {
-          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
-          setScrollProgress(progress);
-          tickingRef.current = false;
-        });
-        tickingRef.current = true;
-      }
+      if (!progressBarRef.current) return;
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+      progressBarRef.current.style.width = `${progress}%`;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -61,77 +56,66 @@ export default function App() {
         return false;
       }
 
-      const rawQuery = searchQuery.toLowerCase();
-      const chipQueries = attachedChips.map((c) => c.query.toLowerCase());
-      
-      if (!rawQuery && chipQueries.length === 0) {
+      if (!searchQuery && attachedChips.length === 0) {
         return true;
       }
 
-      const itemText = [
-        item.title,
-        item.location,
-        item.description,
-        item.type,
-        ...item.features
-      ].join(' ').toLowerCase();
+      const combinedText = `${item.title} ${item.location} ${item.description} ${item.tags.join(' ')}`.toLowerCase();
 
-      const matchesChips = chipQueries.every((cq) => itemText.includes(cq));
-      if (!matchesChips) return false;
+      const chipQueries = attachedChips.map((c) => c.query.toLowerCase());
+      const chipMatch = chipQueries.every((q) => combinedText.includes(q));
 
-      if (rawQuery) {
-        const keywords = rawQuery
-          .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')
-          .split(/\s+/)
-          .filter((w) => w.length > 2 && !['looking', 'for', 'and', 'with', 'the', 'under', 'flat', 'room', 'bed', 'need', 'want'].includes(w));
+      if (!chipMatch) return false;
 
-        if (keywords.length > 0) {
-          const matchesKeyword = keywords.some((kw) => itemText.includes(kw));
-          if (!matchesKeyword) return false;
-        }
-      }
+      if (!searchQuery.trim()) return true;
 
-      return true;
+      const userTokens = searchQuery
+        .toLowerCase()
+        .replace(/[^\w\s]/gi, '')
+        .split(/\s+/)
+        .filter((t) => t.length > 2);
+
+      if (userTokens.length === 0) return true;
+
+      const matchesToken = userTokens.some((token) => combinedText.includes(token));
+      return matchesToken;
     });
   }, [searchQuery, attachedChips, selectedLocation]);
 
-  const handleResetSearch = () => {
-    setSearchQuery('');
-    setAttachedChips([]);
-    setSelectedLocation('All Malta');
-    setIsCanvasExpanded(false);
-    setIsSearchResultsActive(false);
-  };
+  const savedListings = useMemo(() => {
+    return LISTINGS.filter((item) => savedIds.includes(item.id));
+  }, [savedIds]);
 
   return (
     <div className="app-container">
-      {/* Top Scroll Progress Indicator Bar */}
-      <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      {/* DIRECT DOM 60FPS ZERO-LAG SCROLL PROGRESS BAR */}
+      <div ref={progressBarRef} className="scroll-progress-bar" style={{ width: '0%' }} />
 
-      {/* Background Flow */}
-      <BackgroundFlow />
+      {/* SUBTLE FLOATING AMBIENT BACKGROUND */}
       <div className="ambient-background" />
 
-      {/* COVE Navbar */}
+      {/* FLOATING SUBMERGED WATER PAPERS BACKGROUND (Hidden on Mobile) */}
+      <BackgroundFlow />
+
+      {/* NAVBAR WITH LOGO PICKER */}
       <Navbar
-        savedCount={savedIds.length}
-        onOpenMap={() => setViewMode('split')}
-        onResetSearch={handleResetSearch}
         selectedLogoIndex={selectedLogoIndex}
         setSelectedLogoIndex={setSelectedLogoIndex}
+        savedCount={savedIds.length}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
       />
 
-      {/* Hero Section */}
+      {/* HERO & COVE NATURAL SEARCH HEADER SECTION */}
       <section className="hero-section">
         <h1 className="hero-title">
           Don't Search. <span className="magic-rainbow-text">Just Ask COVE.</span>
         </h1>
-
         <p className="hero-subtitle">
           Describe your dream residence in natural words. COVE instantly curates verified penthouses, seafront flats, and Gozo villas in Malta.
         </p>
 
-        {/* Search Focal Point */}
+        {/* PROMINENT AI SEARCH INPUT BAR WITH EXPANDABLE CANAL & TYPEWRITER OVERLAY */}
         <SearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -142,7 +126,7 @@ export default function App() {
           setIsCanvasExpanded={setIsCanvasExpanded}
         />
 
-        {/* PROMINENT BRAND TRUST & METRICS GRID BAR */}
+        {/* HERO TRUST & BRAND PROMISE METRICS GRID BAR */}
         <div className="cove-trust-metrics-grid">
           <div className="trust-metric-card">
             <div className="trust-icon-box">
@@ -176,104 +160,112 @@ export default function App() {
         </div>
       </section>
 
-      {/* Location Filter Tabs */}
+      {/* CATEGORY LOCATION TABS */}
       <nav className="category-nav">
         {LOCATIONS.map((loc) => (
           <button
             key={loc}
             className={`location-tab ${selectedLocation === loc ? 'active' : ''}`}
-            onClick={() => {
-              setSelectedLocation(loc);
-              setIsSearchResultsActive(false);
-            }}
+            onClick={() => setSelectedLocation(loc)}
           >
-            {loc}
+            {loc === 'All Malta' ? '🇲🇹 All Malta' : `📍 ${loc}`}
           </button>
         ))}
       </nav>
 
-      {/* Main Grid & Inline Map Section */}
+      {/* MAIN CONTENT AREA WITHIN ELEVATED DOSSIER TRAY PLATE */}
       <main className="main-content" id="results-section">
         <div className="results-dossier-plate">
           <div className="section-header">
-            <div className="results-count">
-              {isSearchResultsActive ? (
-                <>
-                  <span className="magic-rainbow-text" style={{ fontSize: '1.25rem', fontFamily: 'Outfit, sans-serif' }}>
-                    COVE's Curated Matches for You
-                  </span>
-                  <span>({filteredListings.length > 0 ? filteredListings.length : LISTINGS.length} verified listings)</span>
-                </>
-              ) : (
-                <>
-                  Properties <span>({filteredListings.length} available)</span>
-                </>
-              )}
-            </div>
+            <h2 className="results-count">
+              COVE's Curated Matches for You
+              <span>({filteredListings.length} verified listings)</span>
+            </h2>
 
-            {/* Inline View Mode Switcher Controls */}
+            {/* View Switcher Controls */}
             <div style={{ display: 'flex', gap: '8px' }}>
               <button
                 className={`nav-btn ${viewMode === 'grid' ? 'active-view' : ''}`}
                 onClick={() => setViewMode('grid')}
+                title="Grid View"
               >
-                <LayoutGrid size={14} />
-                <span>Grid</span>
+                <LayoutGrid size={15} />
               </button>
-
               <button
                 className={`nav-btn ${viewMode === 'split' ? 'active-view' : ''}`}
                 onClick={() => setViewMode('split')}
+                title="Split Map View"
               >
-                <Split size={14} />
-                <span>Map + Grid</span>
+                <Split size={15} />
               </button>
-
               <button
                 className={`nav-btn ${viewMode === 'map' ? 'active-view' : ''}`}
                 onClick={() => setViewMode('map')}
+                title="Full Map View"
               >
-                <Map size={14} />
-                <span>Full Map</span>
+                <Map size={15} />
               </button>
             </div>
           </div>
 
-          {/* Render Inline Map when mode is 'split' or 'map' */}
-          {(viewMode === 'split' || viewMode === 'map') && (
-            <InlineMap onSelectListing={(listing) => setSelectedListing(listing)} />
+          {/* VIEW MODE CONDITIONAL RENDERS */}
+          {viewMode === 'map' && (
+            <InlineMap
+              listings={filteredListings}
+              onSelectListing={(item) => setSelectedListing(item)}
+            />
           )}
 
-          {/* Render Property Cards Grid unless mode is 'map' */}
-          {viewMode !== 'map' && (
-            (filteredListings.length > 0 ? filteredListings : LISTINGS).map((item) => (
-              <PropertyCard
-                key={item.id}
-                listing={item}
-                isSaved={savedIds.includes(item.id)}
-                onToggleSave={handleToggleSave}
-                onClick={(listing) => setSelectedListing(listing)}
+          {viewMode === 'split' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <InlineMap
+                listings={filteredListings}
+                onSelectListing={(item) => setSelectedListing(item)}
               />
-            )).reduce((acc, curr, i, arr) => {
-              if (i === 0) return [<div key="grid" className="grid-layout">{arr}</div>];
-              return acc;
-            }, [])
+              <div className="grid-layout">
+                {filteredListings.map((item) => (
+                  <PropertyCard
+                    key={item.id}
+                    item={item}
+                    isSaved={savedIds.includes(item.id)}
+                    onToggleSave={handleToggleSave}
+                    onOpenModal={setSelectedListing}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {viewMode === 'grid' && (
+            <div className="grid-layout">
+              {filteredListings.map((item) => (
+                <PropertyCard
+                  key={item.id}
+                  item={item}
+                  isSaved={savedIds.includes(item.id)}
+                  onToggleSave={handleToggleSave}
+                  onOpenModal={setSelectedListing}
+                />
+              ))}
+            </div>
           )}
         </div>
       </main>
 
-      {/* Footer */}
+      {/* FOOTER */}
       <footer className="footer">
-        <p>© 2026 COVE Malta Ltd. Curated Mediterranean Real Estate.</p>
+        <p>© 2026 COVE MALTA. Premium Mediterranean AI Real Estate Concierge.</p>
       </footer>
 
-      {/* Property Detail Modal */}
-      <PropertyModal
-        listing={selectedListing}
-        onClose={() => setSelectedListing(null)}
-        isSaved={selectedListing ? savedIds.includes(selectedListing.id) : false}
-        onToggleSave={handleToggleSave}
-      />
+      {/* PROPERTY MODAL */}
+      {selectedListing && (
+        <PropertyModal
+          item={selectedListing}
+          isSaved={savedIds.includes(selectedListing.id)}
+          onClose={() => setSelectedListing(null)}
+          onToggleSave={handleToggleSave}
+        />
+      )}
     </div>
   );
 }

@@ -72,6 +72,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
 }
 
 .liquid-silk-path {
+  -webkit-transition: d 1.8s cubic-bezier(0.4, 0, 0.2, 1);
   transition: d 1.8s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: d;
 }
@@ -241,7 +242,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   line-height: 1.3;
 }
 
-/* RESULTS DOSSIER ELEVATED PLATE TRAY */
+/* RESULTS DOSSIER ELEVATED PLATE TRAY (PERFECTLY CENTERED ON ALL SCREENS) */
 .results-dossier-plate {
   background: rgba(15, 19, 29, 0.72);
   backdrop-filter: blur(16px);
@@ -252,6 +253,10 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.1);
   position: relative;
   z-index: 20;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* IN-PAGE CANVAS EXPANSION STYLES & TEASER MATCH CARDS */
@@ -442,7 +447,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   border-color: rgba(255, 255, 255, 0.25);
 }
 
-/* Hardware-Accelerated Scroll Progress Bar */
+/* HARDWARE-ACCELERATED ZERO-LAG SCROLL PROGRESS BAR */
 .scroll-progress-bar {
   position: fixed;
   top: 0;
@@ -450,7 +455,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   height: 3px;
   background: linear-gradient(90deg, var(--accent-primary), var(--accent-cyan));
   z-index: 2000;
-  transition: width 0.08s linear;
+  transition: width 0.05s linear;
   box-shadow: 0 0 10px var(--accent-primary);
   will-change: width;
   transform: translateZ(0);
@@ -1026,6 +1031,10 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   flex: 1;
   position: relative;
   z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .section-header {
@@ -1033,6 +1042,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   align-items: center;
   justify-content: space-between;
   margin-bottom: 28px;
+  width: 100%;
 }
 
 .results-count {
@@ -1052,6 +1062,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 28px;
+  width: 100%;
 }
 
 /* REAL LEAFLET DARK MAP COMPONENT STYLES */
@@ -1454,14 +1465,38 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   z-index: 30;
 }
 
-/* BULLETPROOF RESPONSIVE MOBILE MEDIA QUERIES (FIXING ALL SCREENSHOT ISSUES) */
+/* TARGETED MOBILE MEDIA QUERIES (FIXING ALL 5 USER ISSUES) */
 @media (max-width: 768px) {
-  /* HIDE FLOATING WATER PAPER BACKGROUND SHEETS ON MOBILE TO PREVENT OVERLAPPING CLUTTER! */
+  /* HIDE FLOATING WATER BACKGROUND PAPERS ON MOBILE COMPLETELY */
   .water-paper-container {
     display: none !important;
   }
 
-  /* NAVBAR MOBILE FIX */
+  /* PREVENT iOS MOBILE INPUT FOCUS AUTO-ZOOM (FONT-SIZE >= 16px) */
+  .search-input {
+    font-size: 16px !important; /* Disables iOS auto-zoom on click! */
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* PROMPT TYPEWRITER OVERLAY FIT ON MOBILE */
+  .prompt-overlay {
+    font-size: 0.86rem;
+    padding-right: 4px;
+    width: 100%;
+    max-width: calc(100% - 10px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .prompt-overlay span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* NAVBAR MOBILE STYLES */
   .navbar {
     padding: 10px 14px;
     max-width: 100vw;
@@ -1472,7 +1507,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   }
 
   .brand-title {
-    font-size: 1.05rem;
+    font-size: 1.0rem;
     letter-spacing: 1.2px;
   }
 
@@ -1482,7 +1517,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   }
 
   .nav-actions {
-    gap: 8px;
+    gap: 6px;
   }
 
   .nav-btn {
@@ -1491,16 +1526,16 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   }
 
   .nav-btn span {
-    display: none; /* Hide text on small screen nav buttons to keep header minimal & clean */
+    display: none; /* Hide text on small screen nav buttons */
   }
 
-  /* HERO SECTION & TITLE MOBILE FIX */
+  /* HERO SECTION MOBILE STYLES */
   .hero-section {
-    padding: 24px 12px 14px;
+    padding: 20px 12px 14px;
   }
 
   .hero-title {
-    font-size: 2.1rem; /* Scaled down for mobile viewports */
+    font-size: 2.1rem;
     line-height: 1.2;
     letter-spacing: -0.5px;
     margin-bottom: 10px;
@@ -1508,13 +1543,13 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   }
 
   .hero-subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 18px;
+    font-size: 0.88rem;
+    margin-bottom: 16px;
     padding: 0 4px;
     line-height: 1.4;
   }
 
-  /* SEARCH CONTAINER & PROMPT OVERLAY MOBILE FIX */
+  /* SEARCH CONTAINER MOBILE STYLES */
   .search-container {
     padding: 0 2px;
     margin-bottom: 12px;
@@ -1526,35 +1561,19 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   }
 
   .search-icon {
-    margin-right: 10px;
+    margin-right: 8px;
   }
 
   .search-input-wrapper {
-    height: 46px;
+    height: 44px;
     position: relative;
     flex: 1;
     min-width: 0;
     overflow: hidden;
   }
 
-  .search-input {
-    font-size: 0.92rem;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .prompt-overlay {
-    font-size: 0.88rem;
-    padding-right: 6px;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   .search-action-btn {
-    padding: 10px 16px;
+    padding: 9px 15px;
     font-size: 0.82rem;
     border-radius: var(--radius-pill);
   }
@@ -1586,7 +1605,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     font-size: 0.7rem;
   }
 
-  /* EXPANDED AI REASONING CANVAS MOBILE FIX */
+  /* EXPANDED AI REASONING CANVAS & MORPHING ICON MOBILE FIX */
   .morph-reasoning-canvas-slot {
     flex-direction: column;
     align-items: center;
@@ -1606,6 +1625,15 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
   .morph-fixed-icon-box {
     width: 56px;
     height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .svg-precision-canvas {
+    width: 56px;
+    height: 56px;
+    overflow: visible;
   }
 
   .shape-precision-badge-anchored {
@@ -1643,7 +1671,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     text-align: center;
   }
 
-  /* TEASER MATCH CARDS & RESULTS DOSSIER PLATE MOBILE FIX */
+  /* TEASER MATCH CARDS & RESULTS DOSSIER PLATE MOBILE FIX (CENTERED!) */
   .inpage-teaser-grid {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -1670,9 +1698,14 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     font-size: 0.9rem;
   }
 
+  /* DOSSIER PLATE PERFECTLY CENTERED ON MOBILE */
   .results-dossier-plate {
     padding: 18px 12px;
     border-radius: 20px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto !important;
+    box-sizing: border-box;
   }
 
   .section-header {
@@ -1680,15 +1713,23 @@ h1, h2, h3, h4, h5, h6, .brand-logo, .hero-title, .results-count, .card-title, .
     align-items: center;
     gap: 12px;
     text-align: center;
+    width: 100%;
   }
 
   .main-content {
-    padding: 0 12px 60px;
+    padding: 0 10px 60px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .grid-layout {
     grid-template-columns: 1fr;
     gap: 20px;
+    width: 100%;
   }
 
   .card-image-wrapper {
