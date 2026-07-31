@@ -1,119 +1,92 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Heart, MapPin, Bed, Bath, Maximize, Star, CheckCircle, ArrowUpRight } from 'lucide-react';
 
 export default function PropertyCard({ listing, item, isSaved, onToggleSave, onClick, onOpenModal }) {
-  const [tilt, setTilt] = useState({ x: 0, y: 0, glowX: 50, glowY: 50 });
-  const tickingRef = useRef(false);
-
-  // Safe fallback for listing or item prop
   const data = listing || item;
   if (!data) return null;
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    if (!tickingRef.current) {
-      requestAnimationFrame(() => {
-        const rotateX = ((y - centerY) / centerY) * -6;
-        const rotateY = ((x - centerX) / centerX) * 6;
-
-        setTilt({
-          x: rotateX,
-          y: rotateY,
-          glowX: (x / rect.width) * 100,
-          glowY: (y / rect.height) * 100
-        });
-        tickingRef.current = false;
-      });
-      tickingRef.current = true;
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0, glowX: 50, glowY: 50 });
-  };
 
   const handleCardClick = () => {
     if (onOpenModal) onOpenModal(data);
     else if (onClick) onClick(data);
   };
 
-  return (
-    <div
-      className="property-card 3d-tilt-card"
-      onClick={handleCardClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        '--glow-x': `${tilt.glowX}%`,
-        '--glow-y': `${tilt.glowY}%`
-      }}
-    >
-      <div className="card-spotlight-glow" />
+  // Determine market value score position (default to 48% for Prime Value center)
+  const fpScore = data.advantageScore ? Math.min(85, Math.max(15, 100 - data.advantageScore + 30)) : 48;
 
+  return (
+    <div className="property-card" onClick={handleCardClick}>
       <div className="card-image-wrapper">
-        <img src={data.image} alt={data.title} loading="lazy" />
+        <img className="card-image" src={data.image} alt={data.title} loading="lazy" />
         <div className="card-badge">{data.type}</div>
         <button
-          className={`card-heart-btn ${isSaved ? 'saved' : ''}`}
+          className={`save-btn ${isSaved ? 'saved' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
             onToggleSave(data.id);
           }}
           title={isSaved ? "Remove from saved" : "Save property"}
         >
-          <Heart size={18} fill={isSaved ? "#FF4757" : "none"} />
+          <Heart size={16} fill={isSaved ? "var(--luxury-gold)" : "none"} />
         </button>
       </div>
 
       <div className="card-body">
         <div className="card-location">
-          <MapPin size={13} color="#E5C158" />
-          <span>{data.location}, MALTA</span>
+          <MapPin size={13} color="var(--luxury-gold)" />
+          <span className="truncate-text">{data.location}, MALTA</span>
           {data.isVerified && (
-            <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '3px', color: '#E5C158', fontSize: '0.72rem' }}>
+            <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--luxury-gold)', fontSize: '0.72rem', flexShrink: 0 }}>
               <CheckCircle size={11} /> Verified
             </span>
           )}
         </div>
 
-        <h3 className="card-title">{data.title}</h3>
+        <h3 className="card-title truncate-text" title={data.title}>{data.title}</h3>
 
-        <div className="card-specs">
-          <div className="spec-item">
+        <div className="card-features">
+          <div className="card-feature-item">
             <Bed size={14} />
             <span>{data.bedrooms} Beds</span>
           </div>
-          <div className="spec-item">
+          <div className="card-feature-item">
             <Bath size={14} />
             <span>{data.bathrooms} Baths</span>
           </div>
-          <div className="spec-item">
+          <div className="card-feature-item">
             <Maximize size={14} />
             <span>{data.area} m²</span>
           </div>
           {data.rating && (
-            <div className="spec-item" style={{ marginLeft: 'auto', color: '#E5C158', fontWeight: 600 }}>
-              <Star size={13} fill="#E5C158" />
+            <div className="card-feature-item" style={{ marginLeft: 'auto', color: 'var(--luxury-gold)', fontWeight: 600 }}>
+              <Star size={13} fill="var(--luxury-gold)" />
               <span>{data.rating}</span>
             </div>
           )}
         </div>
 
+        {/* BORDERLESS FLOATING VALUE SPECTRUM LINE */}
+        <div className="floating-value-fp-box">
+          <div className="fp-spectrum-track-container">
+            <div className="fp-spectrum-track" />
+            <div className="fp-indicator-dot" style={{ left: `${fpScore}%` }} />
+          </div>
+
+          <div className="fp-zone-labels">
+            <span>Standard</span>
+            <span className="fp-center-label">Prime Value</span>
+            <span>Exclusive</span>
+          </div>
+        </div>
+
         <div className="card-footer">
           <div className="price-tag">
             <span className="price-amount">{data.currency}{data.price.toLocaleString()}</span>
-            <span className="price-period">/month</span>
+            <span className="price-period"> / mo</span>
           </div>
 
-          <button className="view-details-btn">
-            <span>View</span>
-            <ArrowUpRight size={14} />
+          <button className="nav-btn" style={{ padding: '6px 14px', fontSize: '0.78rem', flexShrink: 0 }}>
+            <span>View Dossier</span>
+            <ArrowUpRight size={13} />
           </button>
         </div>
       </div>

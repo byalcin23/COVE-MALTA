@@ -16,6 +16,8 @@ export const LISTINGS = [
     reviewsCount: 38,
     isPopular: true,
     isVerified: true,
+    advantageTag: "⚡ 12% Below Sliema Avg. Price",
+    advantageScore: 88,
     description: "An extraordinary top-floor penthouse situated along the prime Sliema promenade. Features unhindered panoramic views of the Mediterranean Sea and Valletta bastions, an expansive private terrace with hot tub, smart home automation, and secure underground garage parking.",
     features: ["Sea View", "Private Terrace", "Jacuzzi", "Smart Home", "Garage Parking", "Climate Control", "Pet Friendly"],
     agent: {
