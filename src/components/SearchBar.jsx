@@ -91,36 +91,41 @@ export default function SearchBar({
     if (setIsCanvasExpanded) setIsCanvasExpanded(true);
 
     const startTime = performance.now();
-    const duration = 3000;
+    const duration = 4800; // 4.8s total duration for genuine, authentic AI processing feel
 
     const animateProgress = (now) => {
       const elapsed = now - startTime;
       const t = Math.min(elapsed / duration, 1);
 
-      // Organic AI Fluid Curve (Surge -> Micro Pause -> Wave -> Asymptotic slowdown -> 100%)
+      // 5-Stage Organic AI Processing Curve
+      // 0.0s-1.2s: Tokenizing & Geofencing (0% -> 32%)
+      // 1.2s-2.4s: Cross-referencing contracts & landlords (32% -> 64%)
+      // 2.4s-3.6s: 3D sea view & spatial calculations (64% -> 88%)
+      // 3.6s-4.4s: COVE AI Curation & Lease Matching (88% -> 98%)
+      // 4.4s-4.8s: Synthesis Complete Snap (98% -> 100%)
       let p;
       if (t < 0.25) {
-        p = (t / 0.25) * 38;
-      } else if (t < 0.45) {
-        p = 38 + ((t - 0.25) / 0.20) * 8;
+        p = (t / 0.25) * 32;
+      } else if (t < 0.50) {
+        p = 32 + ((t - 0.25) / 0.25) * 32;
       } else if (t < 0.75) {
-        p = 46 + ((t - 0.45) / 0.30) * 38;
-      } else if (t < 0.95) {
-        p = 84 + ((t - 0.75) / 0.20) * 11;
+        p = 64 + ((t - 0.50) / 0.25) * 24;
+      } else if (t < 0.92) {
+        p = 88 + ((t - 0.75) / 0.17) * 10;
       } else {
-        p = 95 + ((t - 0.95) / 0.05) * 5;
+        p = 98 + ((t - 0.92) / 0.08) * 2;
       }
 
       setCanvasProgress(Math.min(Math.round(p), 100));
 
-      // Organic Morphing & Thought Reel Sync
-      if (p < 28) {
+      // Organic Morphing & Thought Reel Sync (~1.2s per phase)
+      if (p < 30) {
         setCanvasStep(0);
         setThoughtIndex(0);
-      } else if (p < 58) {
+      } else if (p < 62) {
         setCanvasStep(1);
         setThoughtIndex(1);
-      } else if (p < 86) {
+      } else if (p < 88) {
         setCanvasStep(2);
         setThoughtIndex(2);
       } else {
@@ -134,6 +139,7 @@ export default function SearchBar({
         setCanvasProgress(100);
         setCanvasStep(3);
         setThoughtIndex(3);
+        // Hold 400ms at 100% completion so user registers completion before smooth scroll
         setTimeout(() => {
           setIsSearching(false);
           if (setIsCanvasExpanded) setIsCanvasExpanded(false);
@@ -141,7 +147,7 @@ export default function SearchBar({
           if (resultsElem) {
             resultsElem.scrollIntoView({ behavior: 'smooth' });
           }
-        }, 250);
+        }, 400);
       }
     };
 
