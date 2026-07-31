@@ -45,15 +45,15 @@ export default function SearchBar({
       if (typedLength < fullText.length) {
         timer = setTimeout(() => {
           setTypedLength((prev) => prev + 1);
-        }, 32);
+        }, 55);
       } else {
-        timer = setTimeout(() => setIsTyping(false), 2400);
+        timer = setTimeout(() => setIsTyping(false), 4200);
       }
     } else {
       if (typedLength > 0) {
         timer = setTimeout(() => {
           setTypedLength((prev) => prev - 1);
-        }, 16);
+        }, 30);
       } else {
         setPromptIndex((prev) => (prev + 1) % NATURAL_SEARCH_PROMPTS.length);
         setIsTyping(true);

@@ -94,12 +94,37 @@ export default function App() {
 
       {/* HERO & PURE SEARCH HEADER SECTION */}
       <section className="hero-section">
+        {/* FIRST-IMPRESSION VALUE BADGE FOR NEW VISITORS */}
+        <div className="hero-value-badge">
+          <Sparkles size={13} color="var(--luxury-gold)" />
+          <span>MALTA'S #1 AI REAL ESTATE CONCIERGE • NO DROP-DOWN FILTERS NEEDED</span>
+        </div>
+
         <h1 className="hero-title">
           Don't Search. <span className="luxury-gold-text">Just Ask COVE.</span>
         </h1>
+
         <p className="hero-subtitle">
-          Describe your dream residence in natural words. COVE instantly curates verified penthouses, seafront flats, and Gozo villas in Malta.
+          Describe your dream residence in natural human words. COVE instantly curates verified penthouses, seafront flats, and Gozo villas in Malta.
         </p>
+
+        {/* 3-STEP INSTANT COMPREHENSION PILL BAR */}
+        <div className="how-it-works-pill-bar">
+          <div className="step-pill">
+            <span className="step-num">1</span>
+            <span>Describe in plain words</span>
+          </div>
+          <span className="pill-arrow">➔</span>
+          <div className="step-pill">
+            <span className="step-num">2</span>
+            <span>AI verifies escrows</span>
+          </div>
+          <span className="pill-arrow">➔</span>
+          <div className="step-pill">
+            <span className="step-num">3</span>
+            <span>Direct landlord match</span>
+          </div>
+        </div>
 
         {/* PROMINENT AI SEARCH INPUT BAR & SUBTLE NATURAL PROMPT PILLS */}
         <SearchBar
