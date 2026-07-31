@@ -168,26 +168,26 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
       const currentTheme = rootElem ? rootElem.getAttribute('data-theme') : 'porcelain-light';
       const isLightMode = currentTheme && currentTheme.includes('light');
 
-      // Adaptive Color & Stroke Scheme (INTENSIFIES DURING SYNTHESIS MODE)
+      // Adaptive Color & Stroke Scheme (100% Peaceful & Constant)
       const colors = isLightMode ? {
-        grid: isCanvasExpanded ? 'rgba(5, 150, 105, 0.18)' : 'rgba(15, 23, 42, 0.09)',
-        tendril: isCanvasExpanded ? 'rgba(5, 150, 105, 0.85)' : 'rgba(5, 150, 105, 0.55)',
-        orb: isCanvasExpanded ? '#059669' : 'rgba(5, 150, 105, 0.9)',
-        badge: 'rgba(5, 150, 105, 0.9)',
-        strokeVerified: isCanvasExpanded ? 'rgba(5, 150, 105, 0.9)' : 'rgba(5, 150, 105, 0.65)',
-        strokeUnverified: isCanvasExpanded ? 'rgba(5, 150, 105, 0.5)' : 'rgba(15, 23, 42, 0.35)',
-        titleVerified: 'rgba(5, 150, 105, 1)',
+        grid: 'rgba(15, 23, 42, 0.08)',
+        tendril: 'rgba(5, 150, 105, 0.55)',
+        orb: 'rgba(5, 150, 105, 0.85)',
+        badge: 'rgba(5, 150, 105, 0.85)',
+        strokeVerified: 'rgba(5, 150, 105, 0.70)',
+        strokeUnverified: 'rgba(15, 23, 42, 0.30)',
+        titleVerified: 'rgba(5, 150, 105, 0.95)',
         titleUnverified: 'rgba(15, 23, 42, 0.65)',
-        log: 'rgba(15, 23, 42, 0.85)',
-        spec: 'rgba(15, 23, 42, 0.55)',
-        particle: isCanvasExpanded ? '#059669' : 'rgba(5, 150, 105, 0.35)'
+        log: 'rgba(15, 23, 42, 0.80)',
+        spec: 'rgba(15, 23, 42, 0.50)',
+        particle: 'rgba(5, 150, 105, 0.35)'
       } : {
-        grid: isCanvasExpanded ? 'rgba(229, 193, 88, 0.12)' : 'rgba(56, 189, 248, 0.03)',
-        tendril: isCanvasExpanded ? 'rgba(229, 193, 88, 0.75)' : 'rgba(56, 189, 248, 0.2)',
-        orb: isCanvasExpanded ? '#E5C158' : 'rgba(229, 193, 88, 0.85)',
+        grid: 'rgba(56, 189, 248, 0.03)',
+        tendril: 'rgba(56, 189, 248, 0.25)',
+        orb: 'rgba(229, 193, 88, 0.85)',
         badge: 'rgba(56, 189, 248, 0.5)',
-        strokeVerified: isCanvasExpanded ? 'rgba(229, 193, 88, 0.75)' : 'rgba(56, 189, 248, 0.25)',
-        strokeUnverified: isCanvasExpanded ? 'rgba(229, 193, 88, 0.4)' : 'rgba(56, 189, 248, 0.1)',
+        strokeVerified: 'rgba(229, 193, 88, 0.65)',
+        strokeUnverified: 'rgba(56, 189, 248, 0.15)',
         titleVerified: 'rgba(229, 193, 88, 0.85)',
         titleUnverified: 'rgba(56, 189, 248, 0.3)',
         log: 'rgba(56, 189, 248, 0.55)',
@@ -223,9 +223,9 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
         ctx.stroke();
       }
 
-      // 2. Render Fluid Synaptic Tendrils with Accelerated Waves during Search Synthesis
+      // 2. Render Fluid Synaptic Tendrils (Peaceful Constant Speed)
       tendrils.forEach((t, idx) => {
-        t.biolumPulse += t.pulseSpeed * (isCanvasExpanded ? 3 : 1);
+        t.biolumPulse += t.pulseSpeed;
 
         const startX = t.baseX * width + offsetX * 0.4;
         const startY = height + 40;
@@ -234,16 +234,15 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
         const destX = sch.xRatio * width + offsetX * (sch.scale * 1.2);
         const destY = sch.yRatio * height + offsetY * (sch.scale * 1.2);
 
-        // Accelerated wave undulation during search
-        const waveMultiplier = isCanvasExpanded ? 2.5 : 1;
-        const cp1x = startX + Math.sin(time * t.waveFreq * waveMultiplier + t.phaseOffset) * (isCanvasExpanded ? 75 : 45);
+        // Constant peaceful wave undulation
+        const cp1x = startX + Math.sin(time * t.waveFreq + t.phaseOffset) * 45;
         const cp1y = startY - (height * 0.4);
-        const cp2x = destX + Math.cos(time * t.waveFreq * 0.8 * waveMultiplier + t.phaseOffset) * (isCanvasExpanded ? 75 : 45);
+        const cp2x = destX + Math.cos(time * t.waveFreq * 0.8 + t.phaseOffset) * 45;
         const cp2y = destY + (height * 0.3);
 
         ctx.save();
         ctx.strokeStyle = colors.tendril;
-        ctx.lineWidth = isCanvasExpanded ? (isLightMode ? 2.8 : 2.0) : (isLightMode ? 1.8 : 1.2);
+        ctx.lineWidth = isLightMode ? 1.8 : 1.2;
         ctx.setLineDash([8, 6]);
 
         ctx.beginPath();
@@ -252,8 +251,8 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
         ctx.stroke();
         ctx.restore();
 
-        // Rapid Bioluminescent Energy Orbs
-        const speedMultiplier = isCanvasExpanded ? 1.8 : 0.4;
+        // Bioluminescent Energy Orbs (Constant Smooth Flow)
+        const speedMultiplier = 0.4;
         const tParam = (Math.sin(time * speedMultiplier + idx) + 1) / 2;
         const oneMinusT = 1 - tParam;
         
@@ -269,7 +268,7 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
 
         ctx.beginPath();
         ctx.fillStyle = colors.orb;
-        ctx.arc(orbX, orbY, isCanvasExpanded ? 5.5 : (isLightMode ? 3.8 : 3.0), 0, Math.PI * 2);
+        ctx.arc(orbX, orbY, isLightMode ? 3.8 : 3.0, 0, Math.PI * 2);
         ctx.fill();
 
         if (tParam > 0.85) {
@@ -277,12 +276,12 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
         }
       });
 
-      // 3. Render Architectural Blueprints with Accelerated Vectors
+      // 3. Render Architectural Blueprints (Constant Peaceful Movement)
       schematics.forEach((sch, idx) => {
         const isVerified = verifiedNodes.has(sch.id);
 
-        const driftX = Math.sin(time * (isCanvasExpanded ? 0.2 : 0.05) + idx) * (isCanvasExpanded ? 8 : 4);
-        const driftY = Math.cos(time * (isCanvasExpanded ? 0.16 : 0.04) + idx) * (isCanvasExpanded ? 6 : 3);
+        const driftX = Math.sin(time * 0.05 + idx) * 4;
+        const driftY = Math.cos(time * 0.04 + idx) * 3;
 
         const cx = sch.xRatio * width + offsetX * (sch.scale * 1.2) + driftX;
         const cy = sch.yRatio * height + offsetY * (sch.scale * 1.2) + driftY;
@@ -291,17 +290,9 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
         ctx.translate(cx, cy);
         ctx.rotate(sch.rot);
 
-        // Permanent Verified Badge
-        if (isVerified || isCanvasExpanded) {
-          ctx.fillStyle = colors.badge;
-          ctx.font = isLightMode ? 'bold 9.5px "JetBrains Mono", monospace' : '8.5px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.fillText(`[ ✔ INDEXED & ESCROW READY ]`, 0, -95 * sch.scale);
-        }
-
         // Blueprint Vector Stroke
-        ctx.strokeStyle = (isVerified || isCanvasExpanded) ? colors.strokeVerified : colors.strokeUnverified;
-        ctx.lineWidth = (isVerified || isCanvasExpanded) ? (isLightMode ? 2.4 : 1.6) : (isLightMode ? 1.8 : 1.0);
+        ctx.strokeStyle = isVerified ? colors.strokeVerified : colors.strokeUnverified;
+        ctx.lineWidth = isVerified ? (isLightMode ? 2.2 : 1.5) : (isLightMode ? 1.6 : 1.0);
         ctx.setLineDash([4, 4]);
 
         if (sch.type === 'floorplan' || sch.type === 'duplex') {
@@ -316,32 +307,25 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
 
         // Blueprint Title
         ctx.font = isLightMode ? 'bold 10.5px "JetBrains Mono", monospace' : '9.5px "JetBrains Mono", monospace';
-        ctx.fillStyle = (isVerified || isCanvasExpanded) ? colors.titleVerified : colors.titleUnverified;
+        ctx.fillStyle = isVerified ? colors.titleVerified : colors.titleUnverified;
         ctx.textAlign = 'left';
         ctx.fillText(sch.title, -85 * sch.scale, -65 * sch.scale);
 
-        // Technical Specs / Real-Time Live Logs
-        if (isVerified || isCanvasExpanded) {
-          sch.logs.forEach((logLine, logIdx) => {
-            ctx.fillStyle = colors.log;
-            ctx.fillText(logLine, -85 * sch.scale, 75 * sch.scale + logIdx * 12);
-          });
-        } else {
-          sch.specs.forEach((sp, specIdx) => {
-            ctx.fillStyle = colors.spec;
-            ctx.fillText(`• ${sp}`, -85 * sch.scale, 75 * sch.scale + specIdx * 12);
-          });
-        }
+        // Technical Specs
+        sch.specs.forEach((sp, specIdx) => {
+          ctx.fillStyle = colors.spec;
+          ctx.fillText(`• ${sp}`, -85 * sch.scale, 75 * sch.scale + specIdx * 12);
+        });
 
         ctx.restore();
       });
 
-      // 4. Render Ambient AI Particles
+      // 4. Render Ambient AI Particles (Constant Motion)
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
-        n.x += n.vx * (isCanvasExpanded ? 4 : 1);
-        n.y += n.vy * (isCanvasExpanded ? 4 : 1);
-        n.pulse += isCanvasExpanded ? 0.04 : 0.008;
+        n.x += n.vx;
+        n.y += n.vy;
+        n.pulse += 0.008;
 
         if (n.x < 0 || n.x > width) n.vx *= -1;
         if (n.y < 0 || n.y > height) n.vy *= -1;
@@ -350,7 +334,7 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
 
         ctx.beginPath();
         ctx.fillStyle = colors.particle;
-        ctx.arc(n.x + offsetX, n.y + offsetY, n.radius * pulseScale * (isCanvasExpanded ? 1.5 : 1), 0, Math.PI * 2);
+        ctx.arc(n.x + offsetX, n.y + offsetY, n.radius * pulseScale, 0, Math.PI * 2);
         ctx.fill();
       }
 
