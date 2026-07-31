@@ -86,39 +86,62 @@ export default function SearchBar({
   const handleSearchClick = () => {
     setIsSearching(true);
     setCanvasStep(0);
-    setCanvasProgress(15);
+    setCanvasProgress(0);
     setThoughtIndex(0);
     if (setIsCanvasExpanded) setIsCanvasExpanded(true);
 
-    // Calm 750ms interval per AI step
-    setTimeout(() => {
-      setCanvasStep(1);
-      setCanvasProgress(45);
-      setThoughtIndex(1);
-    }, 750);
+    const startTime = performance.now();
+    const duration = 3000;
 
-    setTimeout(() => {
-      setCanvasStep(2);
-      setCanvasProgress(80);
-      setThoughtIndex(2);
-    }, 1500);
+    const animateProgress = (now) => {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
 
-    setTimeout(() => {
-      setCanvasStep(3);
-      setCanvasProgress(100);
-      setThoughtIndex(3);
-    }, 2250);
-
-    // Complete & smooth scroll to results
-    setTimeout(() => {
-      setIsSearching(false);
-      if (setIsCanvasExpanded) setIsCanvasExpanded(false);
-      if (onExecuteSearch) onExecuteSearch();
-      const resultsElem = document.getElementById('results-section');
-      if (resultsElem) {
-        resultsElem.scrollIntoView({ behavior: 'smooth' });
+      // Organic AI Fluid Curve (Surge -> Micro Pause -> Wave -> Asymptotic slowdown -> 100%)
+      let p;
+      if (t < 0.25) {
+        p = (t / 0.25) * 38;
+      } else if (t < 0.45) {
+        p = 38 + ((t - 0.25) / 0.20) * 8;
+      } else if (t < 0.75) {
+        p = 46 + ((t - 0.45) / 0.30) * 38;
+      } else if (t < 0.95) {
+        p = 84 + ((t - 0.75) / 0.20) * 11;
+      } else {
+        p = 95 + ((t - 0.95) / 0.05) * 5;
       }
-    }, 3000);
+
+      setCanvasProgress(Math.min(Math.round(p), 100));
+
+      // Organic Morphing & Thought Reel Sync
+      if (p < 28) {
+        setCanvasStep(0);
+        setThoughtIndex(0);
+      } else if (p < 58) {
+        setCanvasStep(1);
+        setThoughtIndex(1);
+      } else if (p < 86) {
+        setCanvasStep(2);
+        setThoughtIndex(2);
+      } else {
+        setCanvasStep(3);
+        setThoughtIndex(3);
+      }
+
+      if (t < 1) {
+        requestAnimationFrame(animateProgress);
+      } else {
+        setIsSearching(false);
+        if (setIsCanvasExpanded) setIsCanvasExpanded(false);
+        if (onExecuteSearch) onExecuteSearch();
+        const resultsElem = document.getElementById('results-section');
+        if (resultsElem) {
+          resultsElem.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    };
+
+    requestAnimationFrame(animateProgress);
   };
 
   // Magic rainbow text highlight renderer

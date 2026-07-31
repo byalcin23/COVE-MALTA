@@ -159,8 +159,8 @@ export default function CoveBlueprintMindCanvas({ isCanvasExpanded = false }) {
     // Main 60FPS Render Loop
     let time = 0;
     const render = () => {
-      // ACCELERATED TIME STEP DURING ACTIVE SEARCH COMPUTATION
-      const timeIncrement = isCanvasExpanded ? 0.018 : 0.004;
+      // PERMANENT CONSTANT PEACEFUL FLOW SPEED
+      const timeIncrement = 0.004;
       time += timeIncrement;
 
       // Detect current theme mode from DOM data-theme attribute
