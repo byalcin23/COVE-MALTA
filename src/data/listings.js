@@ -198,6 +198,216 @@ export const LISTINGS = [
       minimumLease: "12 Months",
       energyRating: "A+"
     }
+  },
+  {
+    id: "mlt-007",
+    title: "Ta' Xbiex Superyacht Marina Penthouse",
+    location: "Ta' Xbiex",
+    address: "Marina Seafront, Ta' Xbiex, XBX 1020",
+    price: 2950,
+    currency: "€",
+    period: "month",
+    bedrooms: 3,
+    bathrooms: 3,
+    area: 195,
+    type: "Marina Penthouse",
+    image: "/images/sliema.png",
+    rating: 4.97,
+    reviewsCount: 42,
+    isPopular: true,
+    isVerified: true,
+    advantageTag: "💎 Prime Seafront Marina Location",
+    advantageScore: 92,
+    description: "Ultra-luxury seafront residence directly overlooking the Ta' Xbiex superyacht marina and Valletta bastions. Features open-plan living, private jacuzzi terrace, and underground garage.",
+    features: ["Superyacht Marina View", "Private Jacuzzi", "Underground Garage", "Smart Home", "Concierge Service"],
+    agent: {
+      name: "Julian Pace",
+      company: "Malta Haven Luxury Estates",
+      phone: "+356 9912 3456",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    },
+    specs: {
+      floor: "6th Floor (Top Floor)",
+      deposit: "€2,950",
+      availableFrom: "Immediate",
+      minimumLease: "12 Months",
+      energyRating: "A++"
+    }
+  },
+  {
+    id: "mlt-008",
+    title: "Mdina Citadel Heritage Residence",
+    location: "Mdina",
+    address: "Villegaignon Street, Mdina, MDN 1010",
+    price: 2250,
+    currency: "€",
+    period: "month",
+    bedrooms: 2,
+    bathrooms: 2,
+    area: 135,
+    type: "Historic Palazzo",
+    image: "/images/valletta.png",
+    rating: 4.91,
+    reviewsCount: 26,
+    isPopular: false,
+    isVerified: true,
+    advantageTag: "⚡ 15% Below Mdina Citadel Avg.",
+    advantageScore: 86,
+    description: "Nestled within the ancient silent city walls of Mdina. Restored 16th-century stone palazzo featuring vaulted ceilings, courtyard garden, and antique timber finishes.",
+    features: ["Historic Vaulted Ceilings", "Courtyard Garden", "Silent City Location", "Fireplace", "Escrow Ready"],
+    agent: {
+      name: "Elena Cassar",
+      company: "Spinola Real Estate",
+      phone: "+356 9988 7766",
+      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80"
+    },
+    specs: {
+      floor: "Ground & 1st Floor",
+      deposit: "€2,250",
+      availableFrom: "September 1st",
+      minimumLease: "6 Months",
+      energyRating: "A"
+    }
+  },
+  {
+    id: "mlt-009",
+    title: "St. Paul's Bay Sunset Promenade Flat",
+    location: "St. Paul's Bay",
+    address: "Dawret il-Yacht, St. Paul's Bay, SPB 2011",
+    price: 1350,
+    currency: "€",
+    period: "month",
+    bedrooms: 2,
+    bathrooms: 1,
+    area: 95,
+    type: "Seafront Flat",
+    image: "/images/st_julians.png",
+    rating: 4.82,
+    reviewsCount: 19,
+    isPopular: false,
+    isVerified: true,
+    advantageTag: "⚡ 20% Below Bay Promenade Avg.",
+    advantageScore: 89,
+    description: "Sleek seafront residence with unobstructed sunset views across St. Paul's Islands. Modern kitchen, sea-facing balcony, and high-speed fiber connectivity.",
+    features: ["Sunset Sea View", "Seafront Balcony", "Fiber Internet", "Air Conditioning", "Lift Access"],
+    agent: {
+      name: "Julian Pace",
+      company: "Malta Haven Luxury Estates",
+      phone: "+356 9912 3456",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    },
+    specs: {
+      floor: "4th Floor",
+      deposit: "€1,350",
+      availableFrom: "Immediate",
+      minimumLease: "6 Months",
+      energyRating: "B+"
+    }
+  },
+  {
+    id: "mlt-010",
+    title: "Marsaxlokk Fishing Village Harbour Suite",
+    location: "Marsaxlokk",
+    address: "Xatt ir-Risq, Marsaxlokk, MXK 1030",
+    price: 1200,
+    currency: "€",
+    period: "month",
+    bedrooms: 2,
+    bathrooms: 1,
+    area: 90,
+    type: "Harbour Suite",
+    image: "/images/valletta.png",
+    rating: 4.79,
+    reviewsCount: 15,
+    isPopular: false,
+    isVerified: true,
+    advantageTag: "🔥 High Value Rental Opportunity",
+    advantageScore: 94,
+    description: "Charming traditional harbour residence facing colorful Luzzu fishing boats. Freshly refurbished with Mediterranean wooden shutters and balcony.",
+    features: ["Harbour Balcony", "Refurbished Kitchen", "Quiet Village Vibe", "Walk to Seafood Dining"],
+    agent: {
+      name: "Samantha Vella",
+      company: "Gozo Island Living",
+      phone: "+356 9944 5566",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    specs: {
+      floor: "2nd Floor",
+      deposit: "€1,200",
+      availableFrom: "Immediate",
+      minimumLease: "6 Months",
+      energyRating: "B"
+    }
+  },
+  {
+    id: "mlt-011",
+    title: "Valletta Bastion Executive Penthouse",
+    location: "Valletta",
+    address: "St. Barbara Bastion, Valletta, VLT 1060",
+    price: 3200,
+    currency: "€",
+    period: "month",
+    bedrooms: 2,
+    bathrooms: 2,
+    area: 175,
+    type: "Bastion Penthouse",
+    image: "/images/valletta.png",
+    rating: 4.98,
+    reviewsCount: 54,
+    isPopular: true,
+    isVerified: true,
+    advantageTag: "💎 Grand Harbour Bastion View",
+    advantageScore: 96,
+    description: "Prestige top-floor penthouse along St. Barbara Bastion overlooking the Grand Harbour and Three Cities. Features private roof pool, glass elevator, and bespoke Italian furnishings.",
+    features: ["Private Roof Pool", "Grand Harbour View", "Glass Elevator", "Bespoke Furnishings", "Direct Escrow"],
+    agent: {
+      name: "Elena Cassar",
+      company: "Spinola Real Estate",
+      phone: "+356 9988 7766",
+      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80"
+    },
+    specs: {
+      floor: "5th Floor (Top Floor)",
+      deposit: "€3,200",
+      availableFrom: "Immediate",
+      minimumLease: "12 Months",
+      energyRating: "A++"
+    }
+  },
+  {
+    id: "mlt-012",
+    title: "Gozo Victoria Citadel View Apartment",
+    location: "Gozo",
+    address: "Citadel Street, Victoria, VCT 1012",
+    price: 1100,
+    currency: "€",
+    period: "month",
+    bedrooms: 2,
+    bathrooms: 1,
+    area: 105,
+    type: "Citadel Residence",
+    image: "/images/gozo_villa.png",
+    rating: 4.86,
+    reviewsCount: 21,
+    isPopular: false,
+    isVerified: true,
+    advantageTag: "⚡ 18% Below Victoria Town Avg.",
+    advantageScore: 91,
+    description: "Sun-drenched Gozo apartment with uninterrupted views of Victoria Citadel. Quiet residential neighborhood, solar heating, and underground storage.",
+    features: ["Citadel Panorama", "Solar Hot Water", "Balcony", "Storage Locker", "Low Utilities"],
+    agent: {
+      name: "Samantha Vella",
+      company: "Gozo Island Living",
+      phone: "+356 9944 5566",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    specs: {
+      floor: "2nd Floor",
+      deposit: "€1,100",
+      availableFrom: "Immediate",
+      minimumLease: "6 Months",
+      energyRating: "A"
+    }
   }
 ];
 
@@ -208,5 +418,9 @@ export const LOCATIONS = [
   "Valletta",
   "Gzira",
   "Gozo",
-  "Mellieħa"
+  "Mellieħa",
+  "Ta' Xbiex",
+  "Mdina",
+  "St. Paul's Bay",
+  "Marsaxlokk"
 ];

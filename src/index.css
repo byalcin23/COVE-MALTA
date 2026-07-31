@@ -261,63 +261,117 @@ body {
   gap: 16px;
 }
 
-/* 2026 Live Palette & Geometry Switcher Control Bar */
-.palette-switcher-bar {
+/* Compact Collapsible Style Menu Dropdown */
+.style-dropdown-container {
+  position: relative;
+}
+
+.dropdown-chevron {
+  transition: transform 0.25s ease;
+}
+
+.dropdown-chevron.open {
+  transform: rotate(180deg);
+}
+
+.style-menu-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 260px;
+  background: var(--surface-raised);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--hairline-gold-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  padding: 14px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-group-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--luxury-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.menu-geom-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-geom-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--lacquer-deep);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-warm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+}
+
+.menu-geom-item.selected, .menu-geom-item:hover {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: var(--hairline-gold-strong);
+  color: var(--luxury-gold);
+}
+
+.menu-divider {
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.menu-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.menu-theme-item {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 6px 8px;
   background: var(--lacquer-deep);
   border: 1px solid var(--border-subtle);
-  padding: 4px;
-  border-radius: var(--radius-pill);
-}
-
-.geometry-switcher-bar {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--lacquer-deep);
-  border: 1px solid var(--border-subtle);
-  padding: 3px 6px;
-  border-radius: var(--radius-pill);
-}
-
-.geom-btn {
-  padding: 4px 10px;
+  border-radius: var(--radius-sm);
   font-size: 0.72rem;
-  font-weight: 700;
-  border-radius: var(--radius-pill);
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: var(--text-warm);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.geom-btn.active {
-  background: var(--surface-card);
+.menu-theme-item.selected, .menu-theme-item:hover {
+  border-color: var(--luxury-gold);
   color: var(--luxury-gold);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.palette-btn {
-  width: 22px;
-  height: 22px;
+.theme-color-swatch {
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-  position: relative;
-}
-
-.palette-btn:hover {
-  transform: scale(1.15);
-}
-
-.palette-btn.active {
-  border-color: var(--text-ivory);
-  transform: scale(1.15);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
 }
 
 .nav-btn {

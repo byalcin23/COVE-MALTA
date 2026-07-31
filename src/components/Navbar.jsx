@@ -1,19 +1,33 @@
-import React from 'react';
-import { Heart, Map, Plus } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Heart, Map, Palette, ChevronDown, Sparkles } from 'lucide-react';
 
 export default function Navbar({ savedCount, onOpenMap, theme, setTheme, geometry, setGeometry }) {
+  const [isStyleMenuOpen, setIsStyleMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const themes = [
-    { id: 'porcelain-light', name: 'Porcelain Light (Default)', color: '#F8F9FA' },
+    { id: 'porcelain-light', name: 'Porcelain Light', color: '#F8F9FA' },
     { id: 'nordic-light', name: 'Nordic Light', color: '#FBFBFA' },
     { id: 'sandstone-light', name: 'Sandstone Light', color: '#F7F5EE' },
     { id: 'obsidian-dark', name: 'Obsidian Dark', color: '#070D18' }
   ];
 
   const geometries = [
+    { id: 'hybrid', label: '📐 Hybrid Curve (Default)' },
     { id: 'soft', label: '🟢 Soft Squircle (2026)' },
-    { id: 'sharp', label: '🔲 Sharp Grid' },
-    { id: 'hybrid', label: '📐 Hybrid Curve' }
+    { id: 'sharp', label: '🔲 Sharp Grid' }
   ];
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsStyleMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <header className="navbar">
@@ -32,37 +46,62 @@ export default function Navbar({ savedCount, onOpenMap, theme, setTheme, geometr
         </div>
       </div>
 
-      {/* NAV ACTIONS & LIVE 2026 GEOMETRY + PALETTE SWITCHERS */}
+      {/* NAV ACTIONS & COMPACT STYLE DROPDOWN MENU */}
       <div className="nav-actions">
-        {/* 2026 Edge Geometry Switcher (Squircle Soft vs Sharp vs Hybrid) */}
-        <div className="geometry-switcher-bar" title="Test 2026 Edge Geometry (Border Radius)">
-          {geometries.map((g) => (
-            <button
-              key={g.id}
-              className={`geom-btn ${geometry === g.id ? 'active' : ''}`}
-              onClick={() => setGeometry(g.id)}
-            >
-              {g.label}
-            </button>
-          ))}
-        </div>
+        {/* COMPACT COLLAPSIBLE STYLE MENU DROPDOWN */}
+        <div className="style-dropdown-container" ref={dropdownRef}>
+          <button
+            className={`nav-btn style-toggle-btn ${isStyleMenuOpen ? 'active-view' : ''}`}
+            onClick={() => setIsStyleMenuOpen(!isStyleMenuOpen)}
+            title="Custom Theme & Geometry Settings"
+          >
+            <Palette size={15} color="var(--luxury-gold)" />
+            <span className="hide-on-tiny">Style Controls</span>
+            <ChevronDown size={13} className={`dropdown-chevron ${isStyleMenuOpen ? 'open' : ''}`} />
+          </button>
 
-        {/* 2026 Color Palette Switcher */}
-        <div className="palette-switcher-bar" title="Test 2026 Color Palettes">
-          {themes.map((t) => (
-            <button
-              key={t.id}
-              className={`palette-btn ${theme === t.id ? 'active' : ''}`}
-              style={{ background: t.color }}
-              onClick={() => setTheme(t.id)}
-              title={t.name}
-            />
-          ))}
+          {isStyleMenuOpen && (
+            <div className="style-menu-popover">
+              <div className="menu-group">
+                <span className="menu-group-label">📐 2026 Edge Geometry</span>
+                <div className="menu-geom-list">
+                  {geometries.map((g) => (
+                    <button
+                      key={g.id}
+                      className={`menu-geom-item ${geometry === g.id ? 'selected' : ''}`}
+                      onClick={() => { setGeometry(g.id); setIsStyleMenuOpen(false); }}
+                    >
+                      <span>{g.label}</span>
+                      {geometry === g.id && <Sparkles size={13} color="var(--luxury-gold)" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="menu-divider" />
+
+              <div className="menu-group">
+                <span className="menu-group-label">🎨 Color Palette</span>
+                <div className="menu-theme-grid">
+                  {themes.map((t) => (
+                    <button
+                      key={t.id}
+                      className={`menu-theme-item ${theme === t.id ? 'selected' : ''}`}
+                      onClick={() => { setTheme(t.id); setIsStyleMenuOpen(false); }}
+                    >
+                      <span className="theme-color-swatch" style={{ background: t.color }} />
+                      <span>{t.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <button className="nav-btn" onClick={onOpenMap}>
           <Map size={15} />
-          <span>Interactive Map</span>
+          <span className="hide-on-tiny">Map View</span>
         </button>
 
         <button className="nav-btn">
