@@ -37,12 +37,6 @@ export default function App() {
 
   const handleExecuteSearch = () => {
     setIsCanvasExpanded(true);
-    const elem = document.getElementById('results-section');
-    if (elem) elem.scrollIntoView({ behavior: 'smooth' });
-
-    setTimeout(() => {
-      setIsCanvasExpanded(false);
-    }, 2400);
   };
 
   const handleToggleSave = (id) => {

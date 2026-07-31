@@ -131,13 +131,17 @@ export default function SearchBar({
       if (t < 1) {
         requestAnimationFrame(animateProgress);
       } else {
-        setIsSearching(false);
-        if (setIsCanvasExpanded) setIsCanvasExpanded(false);
-        if (onExecuteSearch) onExecuteSearch();
-        const resultsElem = document.getElementById('results-section');
-        if (resultsElem) {
-          resultsElem.scrollIntoView({ behavior: 'smooth' });
-        }
+        setCanvasProgress(100);
+        setCanvasStep(3);
+        setThoughtIndex(3);
+        setTimeout(() => {
+          setIsSearching(false);
+          if (setIsCanvasExpanded) setIsCanvasExpanded(false);
+          const resultsElem = document.getElementById('results-section');
+          if (resultsElem) {
+            resultsElem.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 250);
       }
     };
 
