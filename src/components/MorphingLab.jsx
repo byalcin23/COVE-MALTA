@@ -75,15 +75,6 @@ export default function MorphingLab({ stepIndex = 0 }) {
           />
         </svg>
       </div>
-
-      {/* STATUS BADGE: NO 01/02 NUMBERS! CLEAN SMOOTH SOFT FADE TITLE */}
-      <div className="shape-precision-badge-anchored">
-        <div className="badge-text-soft-fade">
-          <span key={stepIndex} className="badge-fade-item">
-            {currentShape.name}
-          </span>
-        </div>
-      </div>
     </div>
   );
 }

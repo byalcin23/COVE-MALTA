@@ -86,40 +86,39 @@ export default function SearchBar({
   const handleSearchClick = () => {
     setIsSearching(true);
     setCanvasStep(0);
-    setCanvasProgress(10);
+    setCanvasProgress(15);
     setThoughtIndex(0);
     if (setIsCanvasExpanded) setIsCanvasExpanded(true);
 
-    // Step 1
+    // Calm 750ms interval per AI step
     setTimeout(() => {
       setCanvasStep(1);
-      setCanvasProgress(40);
+      setCanvasProgress(45);
       setThoughtIndex(1);
-    }, 600);
+    }, 750);
 
-    // Step 2
     setTimeout(() => {
       setCanvasStep(2);
-      setCanvasProgress(75);
+      setCanvasProgress(80);
       setThoughtIndex(2);
-    }, 1300);
+    }, 1500);
 
-    // Step 3
     setTimeout(() => {
       setCanvasStep(3);
       setCanvasProgress(100);
       setThoughtIndex(3);
-    }, 1900);
+    }, 2250);
 
     // Complete & smooth scroll to results
     setTimeout(() => {
       setIsSearching(false);
       if (setIsCanvasExpanded) setIsCanvasExpanded(false);
+      if (onExecuteSearch) onExecuteSearch();
       const resultsElem = document.getElementById('results-section');
       if (resultsElem) {
         resultsElem.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 2400);
+    }, 3000);
   };
 
   // Magic rainbow text highlight renderer
