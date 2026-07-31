@@ -6,7 +6,7 @@ import PropertyModal from './components/PropertyModal';
 import CoveBlueprintMindCanvas from './components/CoveBlueprintMindCanvas';
 import CoveProductPanel from './components/CoveProductPanel';
 import { LISTINGS, LOCATIONS } from './data/listings';
-import { LayoutGrid, Map, Split } from 'lucide-react';
+import { LayoutGrid, Map, Split, Sparkles } from 'lucide-react';
 
 export default function App() {
   const [theme, setTheme] = useState('porcelain-light'); // Porcelain Light as default!
@@ -37,11 +37,12 @@ export default function App() {
 
   const handleExecuteSearch = () => {
     setIsCanvasExpanded(true);
+    const elem = document.getElementById('results-section');
+    if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+
     setTimeout(() => {
       setIsCanvasExpanded(false);
-      const elem = document.getElementById('results-section');
-      if (elem) elem.scrollIntoView({ behavior: 'smooth' });
-    }, 2800);
+    }, 2400);
   };
 
   const handleToggleSave = (id) => {
@@ -71,7 +72,7 @@ export default function App() {
       <div className="scroll-progress-bar" ref={progressBarRef} />
 
       {/* 60FPS Organic Liquid Synaptic Mind Canvas Background */}
-      <CoveBlueprintMindCanvas />
+      <CoveBlueprintMindCanvas isCanvasExpanded={isCanvasExpanded} />
 
       {/* NAVBAR WITH 2026 LIVE GEOMETRY & PALETTE SWITCHERS */}
       <Navbar
@@ -144,51 +145,88 @@ export default function App() {
             </div>
           </div>
 
-          {/* FUNCTIONAL SKELETON LOADERS (Triggered directly on property cards during AI computation) */}
+          {/* Location Filter Tag Bar */}
+          <div className="location-filter-bar">
+            {LOCATIONS.map((loc) => (
+              <button
+                key={loc}
+                className={`loc-tag ${selectedLocation === loc ? 'active' : ''}`}
+                onClick={() => setSelectedLocation(loc)}
+              >
+                {loc}
+              </button>
+            ))}
+          </div>
+
+          {/* REAL-TIME AI SYNTHESIS STATUS BAR */}
+          {isCanvasExpanded && (
+            <div className="live-synthesis-status-banner">
+              <Sparkles size={16} className="animate-spin" color="var(--luxury-gold)" />
+              <span>▶ COVE AI MIND SYNTHESIZING ESCROW LEASE CONTRACTS & 3D SEA VIEWS...</span>
+            </div>
+          )}
+
+          {/* REAL-TIME SKELETON LOADERS OR VERIFIED PROPERTY CARDS GRID */}
           {isCanvasExpanded ? (
             <div className="grid-layout">
-              {[1, 2, 3, 4, 5, 6].map((idx) => (
-                <div key={idx} className="skeleton-card">
-                  <div className="skeleton-img-box skeleton-shimmer" />
-                  <div className="skeleton-line-long skeleton-shimmer" />
-                  <div className="skeleton-line-short skeleton-shimmer" />
-                  <div className="skeleton-footer">
-                    <div className="skeleton-price skeleton-shimmer" />
-                    <div className="skeleton-badge skeleton-shimmer" />
+              {[1, 2, 3, 4, 5, 6].map((sk) => (
+                <div key={sk} className="skeleton-property-card">
+                  <div className="skeleton-image-box" />
+                  <div className="skeleton-body-box">
+                    <div className="skeleton-line title-line" />
+                    <div className="skeleton-line subtitle-line" />
+                    <div className="skeleton-line spec-line" />
+                    <div className="skeleton-line fp-line" />
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
+          ) : viewMode === 'grid' ? (
             <div className="grid-layout">
-              {filteredListings.map((item) => (
+              {filteredListings.map((listing) => (
                 <PropertyCard
-                  key={item.id}
-                  listing={item}
-                  isSaved={savedIds.includes(item.id)}
+                  key={listing.id}
+                  listing={listing}
+                  isSaved={savedIds.includes(listing.id)}
                   onToggleSave={handleToggleSave}
-                  onOpenModal={(data) => setSelectedListing(data)}
+                  onSelect={setSelectedListing}
                 />
               ))}
+            </div>
+          ) : (
+            <div className="split-view-container">
+              <div className="split-list-column">
+                {filteredListings.map((listing) => (
+                  <PropertyCard
+                    key={listing.id}
+                    listing={listing}
+                    isSaved={savedIds.includes(listing.id)}
+                    onToggleSave={handleToggleSave}
+                    onSelect={setSelectedListing}
+                  />
+                ))}
+              </div>
+              <div className="split-map-column">
+                <div className="map-placeholder-box">
+                  <Map size={32} color="var(--luxury-gold)" />
+                  <h4>Interactive Malta Map View</h4>
+                  <p>Displaying {filteredListings.length} geo-pinned verified rentals across Sliema, Valletta & Gozo</p>
+                </div>
+              </div>
             </div>
           )}
         </div>
       </main>
 
-      {/* PROPERTY MODAL */}
+      {/* PROPERTY DETAILS MODAL */}
       {selectedListing && (
         <PropertyModal
           listing={selectedListing}
-          onClose={() => setSelectedListing(null)}
           isSaved={savedIds.includes(selectedListing.id)}
+          onClose={() => setSelectedListing(null)}
           onToggleSave={handleToggleSave}
         />
       )}
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <p>© 2026 COVE Malta. All Rights Reserved. Verified Natural Language Escrow Leases.</p>
-      </footer>
     </div>
   );
 }
