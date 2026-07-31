@@ -431,12 +431,13 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 1.10rem;
-  color: var(--text-muted);
-  max-width: 640px;
+  font-size: 1.14rem;
+  color: var(--text-warm);
+  max-width: 660px;
   margin: 0 auto 24px;
   font-weight: 500;
   line-height: 1.6;
+  opacity: 0.95;
 }
 
 /* 3-Step Instant Comprehension Pill Bar */

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Heart, MapPin, Bed, Bath, Maximize, Star, CheckCircle, ArrowUpRight } from 'lucide-react';
 
-export default function PropertyCard({ listing, item, isSaved, onToggleSave, onClick, onOpenModal }) {
+export default function PropertyCard({ listing, item, isSaved, onToggleSave, onClick, onOpenModal, onSelect }) {
   const data = listing || item;
   if (!data) return null;
 
   const handleCardClick = () => {
-    if (onOpenModal) onOpenModal(data);
+    if (onSelect) onSelect(data);
+    else if (onOpenModal) onOpenModal(data);
     else if (onClick) onClick(data);
   };
 
@@ -84,7 +85,14 @@ export default function PropertyCard({ listing, item, isSaved, onToggleSave, onC
             <span className="price-period"> / mo</span>
           </div>
 
-          <button className="nav-btn" style={{ padding: '6px 14px', fontSize: '0.78rem', flexShrink: 0 }}>
+          <button
+            className="nav-btn"
+            style={{ padding: '6px 14px', fontSize: '0.78rem', flexShrink: 0 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCardClick();
+            }}
+          >
             <span>View Dossier</span>
             <ArrowUpRight size={13} />
           </button>

@@ -3,6 +3,7 @@ import { Sparkles, ShieldCheck, Zap, FileText, Compass, CheckCircle2, ArrowRight
 
 export default function CoveProductPanel() {
   const [activeStep, setActiveStep] = useState(0);
+  const [matrixTransform, setMatrixTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0,0,0) scale(1)');
   const panelRef = useRef(null);
 
   const steps = [
@@ -60,22 +61,37 @@ export default function CoveProductPanel() {
     }
   ];
 
-  // Auto-switch steps as user scrolls down the section
+  // Apple Flagship 3D Perspective Matrix Parallax Scroll Calculation
   useEffect(() => {
     const handleScroll = () => {
       if (!panelRef.current) return;
       const rect = panelRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      if (rect.top < windowHeight * 0.6 && rect.bottom > 0) {
+      if (rect.top < windowHeight && rect.bottom > 0) {
         const totalHeight = rect.height;
-        const progress = Math.min(Math.max((windowHeight * 0.5 - rect.top) / totalHeight, 0), 0.99);
-        const nextStep = Math.floor(progress * steps.length);
+        const rawProgress = (windowHeight - rect.top) / (windowHeight + totalHeight);
+        const progress = Math.min(Math.max(rawProgress, 0), 1);
+
+        // Step switching
+        const nextStep = Math.min(Math.floor(progress * steps.length), steps.length - 1);
         setActiveStep(nextStep);
+
+        // Apple 3D Matrix Perspective Tilt Transform Formula:
+        const rotX = (0.5 - progress) * 14; // -7deg to +7deg tilt
+        const rotY = (progress - 0.5) * 12; // -6deg to +6deg tilt
+        const translateY = (0.5 - progress) * 25; // 3D floating lift
+        const translateZ = (progress - 0.5) * 40; // 3D depth push
+        const scale = 0.98 + (1 - Math.abs(progress - 0.5) * 2) * 0.04; // Spring scale
+
+        setMatrixTransform(
+          `perspective(1100px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translate3d(0, ${translateY.toFixed(2)}px, ${translateZ.toFixed(2)}px) scale(${scale.toFixed(3)})`
+        );
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [steps.length]);
 
@@ -130,9 +146,15 @@ export default function CoveProductPanel() {
             })}
           </div>
 
-          {/* RIGHT COLUMN: DYNAMIC PREVIEW DEMO SHOWCASE */}
+          {/* RIGHT COLUMN: APPLE 3D MATRIX PARALLAX DEMO SHOWCASE */}
           <div className="story-demo-column">
-            <div className="apple-glass-card-preview">
+            <div
+              className="apple-glass-card-preview 3d-matrix-card"
+              style={{
+                transform: matrixTransform,
+                transition: 'transform 0.12s cubic-bezier(0.16, 1, 0.3, 1)'
+              }}
+            >
               <div className="glass-card-header">
                 <div className="glass-dots">
                   <span className="dot dot-red" />
@@ -140,7 +162,7 @@ export default function CoveProductPanel() {
                   <span className="dot dot-green" />
                 </div>
                 <span className="glass-card-title">
-                  {steps[activeStep].badge} // LIVE DEMO
+                  {steps[activeStep].badge} // 3D MATRIX PARALLAX
                 </span>
               </div>
 
