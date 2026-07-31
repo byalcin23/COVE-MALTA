@@ -61,7 +61,7 @@ export default function CoveProductPanel() {
     }
   ];
 
-  // Apple Flagship 3D Perspective Matrix Parallax Scroll Calculation
+  // Apple Flagship 3D Perspective Matrix Parallax Scroll Calculation (Desktop)
   useEffect(() => {
     const handleScroll = () => {
       if (!panelRef.current) return;
@@ -78,11 +78,11 @@ export default function CoveProductPanel() {
         setActiveStep(nextStep);
 
         // Apple 3D Matrix Perspective Tilt Transform Formula:
-        const rotX = (0.5 - progress) * 14; // -7deg to +7deg tilt
-        const rotY = (progress - 0.5) * 12; // -6deg to +6deg tilt
-        const translateY = (0.5 - progress) * 25; // 3D floating lift
-        const translateZ = (progress - 0.5) * 40; // 3D depth push
-        const scale = 0.98 + (1 - Math.abs(progress - 0.5) * 2) * 0.04; // Spring scale
+        const rotX = (0.5 - progress) * 14;
+        const rotY = (progress - 0.5) * 12;
+        const translateY = (0.5 - progress) * 25;
+        const translateZ = (progress - 0.5) * 40;
+        const scale = 0.98 + (1 - Math.abs(progress - 0.5) * 2) * 0.04;
 
         setMatrixTransform(
           `perspective(1100px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translate3d(0, ${translateY.toFixed(2)}px, ${translateZ.toFixed(2)}px) scale(${scale.toFixed(3)})`
@@ -115,13 +115,11 @@ export default function CoveProductPanel() {
           </p>
         </div>
 
-        {/* APPLE-STYLE INTERACTIVE SCROLL STORYTELLER */}
-        <div className="apple-storyteller-grid">
-          
+        {/* DESKTOP 2-COLUMN STORYTELLER GRID */}
+        <div className="apple-storyteller-grid desktop-only-storyteller">
           {/* LEFT COLUMN: INTERACTIVE NAVIGATION TABS */}
           <div className="story-nav-column">
             {steps.map((step, idx) => {
-              const IconComp = step.icon;
               const isActive = activeStep === idx;
 
               return (
@@ -228,25 +226,95 @@ export default function CoveProductPanel() {
               </div>
 
               <div className="glass-card-footer">
-                <span className="footer-status">STATUS: VERIFIED & READY FOR BOOKING</span>
-                <button
-                  className="demo-action-btn"
-                  onClick={() => {
-                    const searchElem = document.querySelector('.search-input');
-                    if (searchElem) {
-                      searchElem.value = steps[activeStep].demoContent.query || 'Seafront apartment in Sliema';
-                      searchElem.dispatchEvent(new Event('input', { bubbles: true }));
-                    }
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Try In Live Search</span>
-                  <ArrowRight size={14} />
-                </button>
+                <div className="footer-status">
+                  <span className="status-dot-live" />
+                  <span>COVE INTEL ENGINE ACTIVE</span>
+                </div>
+                <span className="footer-ver">v2.4 REALTIME</span>
               </div>
             </div>
           </div>
+        </div>
 
+        {/* MOBILE INTEGRATED STEP CARDS (PAIRED WITH ATTACHED DEMO PREVIEW) */}
+        <div className="mobile-integrated-storyteller mobile-only-storyteller">
+          {steps.map((step, idx) => (
+            <div key={step.id} className="mobile-step-unit-card">
+              <div className="story-tab-header">
+                <span className="story-num">{step.num}</span>
+                <span className="story-badge-tag">{step.badge}</span>
+              </div>
+
+              <h3 className="story-tab-title">{step.title}</h3>
+              <p className="story-tab-desc">{step.desc}</p>
+
+              {/* ATTACHED LIVE DEMO SHOWCASE CARD FOR THIS EXACT STEP */}
+              <div className="mobile-attached-demo-box">
+                <div className="glass-card-header">
+                  <div className="glass-dots">
+                    <span className="dot dot-red" />
+                    <span className="dot dot-yellow" />
+                    <span className="dot dot-green" />
+                  </div>
+                  <span className="glass-card-title">{step.badge}</span>
+                </div>
+
+                <div className="glass-card-body" style={{ padding: '16px' }}>
+                  {idx === 0 && (
+                    <div className="demo-step-1-content">
+                      <div className="demo-input-prompt-box">
+                        <Sparkles size={14} color="var(--luxury-gold)" />
+                        <span style={{ fontSize: '0.82rem' }}>{step.demoContent.query}</span>
+                      </div>
+                      <div className="demo-tokens-grid" style={{ marginTop: '10px' }}>
+                        {step.demoContent.parsedTokens.map((tok, i) => (
+                          <div key={i} className="demo-token-pill">
+                            <span className="token-key">{tok.key}:</span>
+                            <span className="token-val">{tok.val}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {idx === 1 && (
+                    <div className="demo-step-2-content">
+                      <div className="demo-spatial-badge-box">
+                        <Compass size={16} color="var(--luxury-gold)" />
+                        <span style={{ fontSize: '0.82rem' }}>{step.demoContent.radius}</span>
+                      </div>
+                      <div className="demo-spatial-grid">
+                        {step.demoContent.spatialData.map((item, i) => (
+                          <div key={i} className="spatial-data-row">
+                            <span className="spatial-label">{item.label}</span>
+                            <span className="spatial-val">{item.val}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {idx === 2 && (
+                    <div className="demo-step-3-content">
+                      <div className="demo-escrow-certificate" style={{ padding: '12px' }}>
+                        <ShieldCheck size={24} color="#10B981" />
+                        <h4 style={{ fontSize: '0.86rem' }}>{step.demoContent.certificateTitle}</h4>
+                        <p style={{ fontSize: '0.74rem' }}>Protected by Malta Housing Authority Verified Escrow Standards</p>
+                      </div>
+                      <div className="demo-guarantees-list" style={{ marginTop: '10px' }}>
+                        {step.demoContent.guarantees.map((g, i) => (
+                          <div key={i} className="guarantee-item" style={{ fontSize: '0.78rem' }}>
+                            <CheckCircle2 size={15} color="#10B981" />
+                            <span>{g}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
       </div>
