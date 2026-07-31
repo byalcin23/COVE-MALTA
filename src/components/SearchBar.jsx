@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, Sparkles, X, Loader2 } from 'lucide-react';
 import { NATURAL_SEARCH_PROMPTS, QUICK_FILTERS } from '../data/prompts';
+import MorphingLab from './MorphingLab';
 
 export default function SearchBar({
   searchQuery,
@@ -16,8 +17,21 @@ export default function SearchBar({
   const [isTyping, setIsTyping] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
 
+  // In-Page AI Reasoning internal states
+  const [canvasStep, setCanvasStep] = useState(0);
+  const [canvasProgress, setCanvasProgress] = useState(0);
+  const [thoughtIndex, setThoughtIndex] = useState(0);
+
   // Ref for typewriter prompt smooth right-scroll
   const promptOverlayRef = useRef(null);
+
+  // Organic Thought Stream Reel Items
+  const thoughtStream = [
+    { title: "Analyzing natural language prompt query...", detail: "Extracting location, budget, and amenity constraints..." },
+    { title: "Geo-fencing target boundary -> Sliema & Valletta", detail: "Calculating 3D spatial sea view radiuses..." },
+    { title: "Cross-referencing verified escrow lease contracts...", detail: "Validating direct landlord identity & deposit security..." },
+    { title: "COVE AI Synthesis Complete!", detail: "Curating verified penthouse & villa matches..." }
+  ];
 
   // Character-by-character typewriter loop
   useEffect(() => {
@@ -49,7 +63,7 @@ export default function SearchBar({
     return () => clearTimeout(timer);
   }, [typedLength, isTyping, promptIndex, searchQuery, attachedChips, isSearching]);
 
-  // Smoothly auto-scroll prompt overlay to the right as text types out
+  // Smoothly auto-scroll prompt overlay to the right as text types out!
   useEffect(() => {
     if (promptOverlayRef.current) {
       promptOverlayRef.current.scrollLeft = promptOverlayRef.current.scrollWidth;
@@ -71,8 +85,33 @@ export default function SearchBar({
 
   const handleSearchClick = () => {
     setIsSearching(true);
+    setCanvasStep(0);
+    setCanvasProgress(10);
+    setThoughtIndex(0);
     if (setIsCanvasExpanded) setIsCanvasExpanded(true);
 
+    // Step 1
+    setTimeout(() => {
+      setCanvasStep(1);
+      setCanvasProgress(40);
+      setThoughtIndex(1);
+    }, 600);
+
+    // Step 2
+    setTimeout(() => {
+      setCanvasStep(2);
+      setCanvasProgress(75);
+      setThoughtIndex(2);
+    }, 1300);
+
+    // Step 3
+    setTimeout(() => {
+      setCanvasStep(3);
+      setCanvasProgress(100);
+      setThoughtIndex(3);
+    }, 1900);
+
+    // Complete & smooth scroll to results
     setTimeout(() => {
       setIsSearching(false);
       if (setIsCanvasExpanded) setIsCanvasExpanded(false);
@@ -80,7 +119,7 @@ export default function SearchBar({
       if (resultsElem) {
         resultsElem.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 1200);
+    }, 2400);
   };
 
   // Magic rainbow text highlight renderer
@@ -121,7 +160,7 @@ export default function SearchBar({
     <div className="search-container">
       {/* PURE LUXURY AI SEARCHBAR PILL */}
       <div className="search-bar">
-        <div className="search-input-wrapper">
+        <div className="search-box-top-row">
           <Search size={20} className="search-icon" />
 
           <div className="input-relative-box">
@@ -152,7 +191,7 @@ export default function SearchBar({
           {(searchQuery || attachedChips.length > 0) && (
             <button
               className="nav-btn"
-              style={{ padding: '6px 10px', marginRight: '8px', border: 'none', background: 'transparent' }}
+              style={{ padding: '6px 10px', marginRight: '4px', border: 'none', background: 'transparent' }}
               onClick={() => { setSearchQuery(''); setAttachedChips([]); }}
               title="Clear all"
             >
@@ -162,28 +201,48 @@ export default function SearchBar({
 
           <button className="search-action-btn" onClick={handleSearchClick} disabled={isSearching}>
             {isSearching ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
-            <span>{isSearching ? 'Curating...' : 'Search'}</span>
+            <span>{isSearching ? 'Synthesizing...' : 'Search'}</span>
           </button>
         </div>
-
-        {/* Attached Sparkle Tags Row */}
-        {attachedChips.length > 0 && (
-          <div className="attached-tags-bottom-row">
-            {attachedChips.map((chip, idx) => (
-              <div key={idx} className="attached-chip-tag">
-                <Sparkles size={12} color="#E5C158" />
-                <span>{chip.label}</span>
-                <button
-                  className="tag-remove-btn"
-                  onClick={() => removeAttachedChip(chip.query)}
-                >
-                  <X size={11} />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
+
+      {/* ATTACHED SPARKLE TAGS ROW (PLACED OUTSIDE & BELOW MAIN SEARCH PILL BOX!) */}
+      {attachedChips.length > 0 && (
+        <div className="attached-tags-bottom-row">
+          {attachedChips.map((chip, idx) => (
+            <div key={idx} className="attached-chip-tag">
+              <Sparkles size={12} color="#E5C158" />
+              <span>{chip.label}</span>
+              <button
+                className="tag-remove-btn"
+                onClick={() => removeAttachedChip(chip.query)}
+              >
+                <X size={11} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* RESTORED MORPHING AI THINKING STREAM (STANDALONE FLOATING HUD BELOW SEARCHBAR) */}
+      {isSearching && (
+        <div className="floating-ai-hud">
+          <div className="hud-progress-bar">
+            <div className="hud-progress-fill" style={{ width: `${canvasProgress}%` }} />
+          </div>
+
+          <div className="hud-content-row">
+            <div className="hud-icon-stage">
+              <MorphingLab stepIndex={canvasStep} />
+            </div>
+
+            <div className="hud-thought-reel">
+              <span className="hud-thought-title">{thoughtStream[thoughtIndex].title}</span>
+              <span className="hud-thought-detail">{thoughtStream[thoughtIndex].detail}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Subtle Natural Prompt Filter Pills */}
       <div className="quick-chips-container">
