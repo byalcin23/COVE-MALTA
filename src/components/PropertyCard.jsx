@@ -1,9 +1,24 @@
-import React from 'react';
-import { Heart, MapPin, Bed, Bath, Maximize, Star, CheckCircle, ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, MapPin, Bed, Bath, Maximize, Star, CheckCircle, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function PropertyCard({ listing, item, isSaved, onToggleSave, onClick, onOpenModal, onSelect }) {
+  const [currentImgIdx, setCurrentImgIdx] = useState(0);
+
   const data = listing || item;
   if (!data) return null;
+
+  const imageList = data.images && data.images.length > 0 ? data.images : [data.image || '/images/sliema.png'];
+  const activeImage = imageList[currentImgIdx % imageList.length];
+
+  const handlePrevImg = (e) => {
+    e.stopPropagation();
+    setCurrentImgIdx((prev) => (prev - 1 + imageList.length) % imageList.length);
+  };
+
+  const handleNextImg = (e) => {
+    e.stopPropagation();
+    setCurrentImgIdx((prev) => (prev + 1) % imageList.length);
+  };
 
   const handleCardClick = () => {
     if (onSelect) onSelect(data);
@@ -17,8 +32,44 @@ export default function PropertyCard({ listing, item, isSaved, onToggleSave, onC
   return (
     <div className="property-card" onClick={handleCardClick}>
       <div className="card-image-wrapper">
-        <img className="card-image" src={data.image} alt={data.title} loading="lazy" />
+        <img className="card-image" src={activeImage} alt={data.title} loading="lazy" />
+        
+        {/* Soft Theme-Harmonized Hover Carousel Arrows */}
+        {imageList.length > 1 && (
+          <>
+            <button
+              className="carousel-arrow-btn arrow-prev"
+              onClick={handlePrevImg}
+              title="Previous Photo"
+            >
+              <ChevronLeft size={16} color="#FFFFFF" />
+            </button>
+            <button
+              className="carousel-arrow-btn arrow-next"
+              onClick={handleNextImg}
+              title="Next Photo"
+            >
+              <ChevronRight size={16} color="#FFFFFF" />
+            </button>
+
+            {/* Active Image Indicator Dots */}
+            <div className="carousel-indicators">
+              {imageList.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`indicator-dot ${idx === currentImgIdx % imageList.length ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentImgIdx(idx);
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
         <div className="card-badge">{data.type}</div>
+
         <button
           className={`save-btn ${isSaved ? 'saved' : ''}`}
           onClick={(e) => {
